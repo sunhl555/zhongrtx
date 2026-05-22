@@ -3,886 +3,505 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>酒店旅拍助手</title>
+<title>中瑞天禧酒店 · 旅拍助手</title>
 <style>
-:root {
-  --primary: #d4a853;
-  --primary-dark: #b8903a;
-  --bg: #f5f0e8;
-  --card: #fff;
-  --text: #333;
-  --text-light: #888;
-  --border: #e0d8cc;
-  --shadow: 0 2px 12px rgba(0,0,0,.08);
-  --radius: 12px;
-}
-* { margin:0; padding:0; box-sizing:border-box }
-body { font-family:"PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); min-height:100vh }
-/* ===== Header ===== */
-.header { background:#fff; border-bottom:1px solid var(--border); padding:0 20px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100 }
-.header h1 { font-size:18px; font-weight:600; display:flex; align-items:center; gap:8px }
-.header .badge { font-size:11px; background:var(--primary); color:#fff; padding:2px 8px; border-radius:10px }
-.header .actions { display:flex; gap:8px; align-items:center }
-.btn { padding:8px 18px; border-radius:20px; border:none; cursor:pointer; font-size:14px; font-weight:500; transition:.2s }
-.btn-primary { background:var(--primary); color:#fff }
-.btn-primary:hover { background:var(--primary-dark) }
-.btn-outline { background:#fff; color:var(--primary); border:1.5px solid var(--primary) }
-.btn-outline:hover { background:#fdf8f0 }
-.btn-sm { padding:5px 12px; font-size:12px }
-.btn-danger { background:#e74c3c; color:#fff }
-.btn-danger:hover { background:#c0392b }
-.btn-gray { background:#eee; color:#666 }
-.btn-gray:hover { background:#ddd }
+:root{--gold:#d4a853;--goldd:#b8903a;--bg:#f5f0e8;--card:#fff;--txt:#333;--t2:#888;--bd:#e0d8cc;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt)}
+.hidden{display:none!important}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 24px;border-radius:20px;font-size:14px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.btn{padding:10px 22px;border-radius:22px;border:none;cursor:pointer;font-size:14px;font-weight:600;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:var(--goldd)}
+.btn-outline{background:#fff;color:var(--gold);border:1.5px solid var(--gold)}
+.btn-outline:hover{background:#fdf8f0}
+.btn-sm{padding:5px 12px;font-size:12px}
+.btn-danger{background:#e74c3c;color:#fff}.btn-danger:hover{background:#c0392b}
+.btn-gray{background:#eee;color:#666}.btn-gray:hover{background:#ddd}
+.btn-full{width:100%;justify-content:center;padding:14px;font-size:16px}
+.btn-green{background:#0fa87e;color:#fff}.btn-green:active{background:#0b8a68}
 
-/* ===== Layout ===== */
-.container { max-width:1100px; margin:0 auto; padding:20px }
-.split { display:flex; gap:20px; min-height:calc(100vh - 96px) }
-.sidebar { width:240px; flex-shrink:0; background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px 0 }
-.sidebar h3 { font-size:14px; color:var(--text-light); padding:0 16px; margin-bottom:10px; text-transform:uppercase; letter-spacing:2px }
-.sidebar .tpl-item { padding:10px 16px; cursor:pointer; font-size:14px; transition:.15s; border-left:3px solid transparent; display:flex; align-items:center; justify-content:space-between }
-.sidebar .tpl-item:hover { background:#fdf8f0 }
-.sidebar .tpl-item.active { background:#fdf8f0; border-left-color:var(--primary); font-weight:600; color:var(--primary) }
-.sidebar .tpl-item .del { opacity:0; font-size:12px; color:#999; cursor:pointer; padding:2px 6px }
-.sidebar .tpl-item:hover .del { opacity:1 }
-.sidebar .add-btn { margin:10px 16px; width:calc(100% - 32px) }
-.main { flex:1; background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:30px }
+/* ===== GUEST MODE ===== */
+.guest-page{max-width:480px;margin:0 auto;background:#fff;min-height:100vh}
+.guest-top{background:linear-gradient(135deg,#2c3e50,#34495e);color:#fff;text-align:center;padding:24px 20px}
+.guest-top .hn{font-size:13px;opacity:.7;letter-spacing:3px;margin-bottom:4px}
+.guest-top h2{font-size:22px;font-weight:700}
+.guest-body{padding:20px}
 
-/* ===== Form ===== */
-.form-group { margin-bottom:20px }
-.form-group label { display:block; font-size:13px; font-weight:600; color:var(--text-light); margin-bottom:6px; letter-spacing:1px; text-transform:uppercase }
-.form-group input, .form-group textarea { width:100%; padding:10px 14px; border:1.5px solid var(--border); border-radius:8px; font-size:14px; font-family:inherit; resize:vertical; transition:.2s }
-.form-group input:focus, .form-group textarea:focus { outline:none; border-color:var(--primary) }
-.form-group textarea { min-height:120px; line-height:1.7 }
+/* Template selector */
+.tpl-selector{margin-bottom:20px}
+.tpl-selector h3{font-size:14px;color:var(--t2);margin-bottom:10px;letter-spacing:1px}
+.tpl-cards{display:flex;flex-direction:column;gap:10px}
+.tpl-card{background:#fdf8f0;border:2px solid transparent;border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:.2s}
+.tpl-card:hover{border-color:var(--gold)}
+.tpl-card.active{border-color:var(--gold);background:#fff;box-shadow:0 2px 12px rgba(212,168,83,.2)}
+.tpl-card .tpl-name{font-size:15px;font-weight:600;color:var(--txt);margin-bottom:4px}
+.tpl-card .tpl-preview{font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
 
-/* ===== Image Upload ===== */
-.img-grid { display:flex; flex-wrap:wrap; gap:12px; margin-top:8px }
-.img-card { width:120px; height:120px; border-radius:8px; background:#f9f7f3; border:1.5px dashed var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; overflow:hidden; transition:.2s }
-.img-card:hover { border-color:var(--primary) }
-.img-card.add { font-size:32px; color:#ccc }
-.img-card img { width:100%; height:100%; object-fit:cover }
-.img-card .remove { position:absolute; top:4px; right:4px; width:22px; height:22px; background:rgba(0,0,0,.5); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer }
+/* Template detail */
+.tpl-detail .imgs{display:flex;gap:8px;overflow-x:auto;margin-bottom:16px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding-bottom:4px}
+.tpl-detail .imgs img{width:calc(100vw - 80px);max-width:380px;height:240px;object-fit:cover;border-radius:10px;flex-shrink:0;scroll-snap-align:center}
+.tpl-detail .d-title{font-size:20px;font-weight:700;margin-bottom:10px;line-height:1.4}
+.tpl-detail .d-body{font-size:15px;line-height:1.9;color:#444;white-space:pre-wrap;margin-bottom:14px}
+.tpl-detail .d-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.tpl-detail .d-tag{font-size:11px;background:#fdf8f0;color:#b8903a;padding:3px 10px;border-radius:12px}
+.guest-actions{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.steps{background:#f8f6f2;border-radius:var(--r);padding:18px;margin-bottom:20px}
+.steps h4{font-size:13px;color:var(--t2);margin-bottom:10px}
+.steps .st{display:flex;gap:10px;align-items:center;margin-bottom:8px;font-size:13px;color:#555}
+.steps .sn{width:22px;height:22px;background:var(--gold);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.guest-footer{text-align:center;padding:16px;color:#ccc;font-size:11px}
 
-/* ===== Preview ===== */
-.preview-card { background:linear-gradient(135deg,#fdf8f0,#faf5ea); border-radius:var(--radius); padding:24px; margin-top:20px }
-.preview-card h3 { font-size:13px; color:var(--text-light); letter-spacing:2px; margin-bottom:16px }
-.preview-images { display:flex; gap:8px; overflow-x:auto; margin-bottom:16px; padding-bottom:8px }
-.preview-images img { width:200px; height:150px; object-fit:cover; border-radius:8px; flex-shrink:0 }
-.preview-title { font-size:20px; font-weight:700; margin-bottom:8px }
-.preview-body { font-size:14px; line-height:1.8; color:#555; white-space:pre-wrap }
-.preview-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px }
-.preview-tag { font-size:11px; background:#fff; color:var(--primary); padding:3px 10px; border-radius:12px; border:1px solid var(--border) }
+/* No templates */
+.no-tpl{text-align:center;padding:60px 20px;color:#ccc}
+.no-tpl .icon{font-size:48px;margin-bottom:12px}
 
-/* ===== QR & Export Panel ===== */
-.panel { border-top:1px solid var(--border); margin-top:24px; padding-top:20px; display:flex; gap:24px; align-items:center; flex-wrap:wrap }
-.qr-box { text-align:center }
-.qr-box canvas { border-radius:8px }
-.qr-box p { font-size:12px; color:var(--text-light); margin-top:8px }
-.export-info { flex:1; min-width:250px }
-.export-info h4 { font-size:16px; margin-bottom:8px }
-.export-info ol { font-size:13px; color:#666; line-height:1.8; padding-left:18px }
+/* ===== ADMIN MODE ===== */
+.admin-header{background:#fff;border-bottom:1px solid var(--bd);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:52px;position:sticky;top:0;z-index:100}
+.admin-header h1{font-size:17px;font-weight:600}
+.admin-header .badge{font-size:10px;background:var(--gold);color:#fff;padding:2px 8px;border-radius:10px;margin-left:6px}
+.admin-container{max-width:1100px;margin:0 auto;padding:16px}
+.admin-split{display:flex;gap:16px;min-height:calc(100vh - 84px)}
+.admin-sidebar{width:220px;flex-shrink:0;background:var(--card);border-radius:var(--r);box-shadow:0 2px 8px rgba(0,0,0,.06);padding:12px 0}
+.admin-sidebar h3{font-size:12px;color:var(--t2);padding:0 14px;margin-bottom:8px;letter-spacing:2px}
+.admin-sidebar .tpl-item{padding:8px 14px;cursor:pointer;font-size:13px;border-left:3px solid transparent;display:flex;align-items:center;justify-content:space-between}
+.admin-sidebar .tpl-item:hover{background:#fdf8f0}
+.admin-sidebar .tpl-item.sel{background:#fdf8f0;border-left-color:var(--gold);font-weight:600;color:var(--gold)}
+.admin-sidebar .tpl-item .del{opacity:0;font-size:12px;color:#999;cursor:pointer;padding:2px 6px}
+.admin-sidebar .tpl-item:hover .del{opacity:1}
+.admin-main{flex:1;background:var(--card);border-radius:var(--r);box-shadow:0 2px 8px rgba(0,0,0,.06);padding:24px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:5px;letter-spacing:1px}
+.form-group input,.form-group textarea{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:8px;font-size:14px;font-family:inherit;resize:vertical}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--gold)}
+.form-group textarea{min-height:110px;line-height:1.7}
+.img-grid{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.img-card{width:100px;height:100px;border-radius:8px;background:#f9f7f3;border:1.5px dashed var(--bd);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden}
+.img-card:hover{border-color:var(--gold)}
+.img-card.add{font-size:28px;color:#ccc}
+.img-card img{width:100%;height:100%;object-fit:cover}
+.img-card .rm{position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(0,0,0,.5);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer}
+.export-box{border-top:1px solid var(--bd);margin-top:20px;padding-top:16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.export-box .info{flex:1;min-width:200px}
+.export-box .info h4{font-size:15px;margin-bottom:6px}
+.export-box .info p{font-size:12px;color:var(--t2);line-height:1.6}
+.auth-box{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200}
+.auth-card{background:#fff;border-radius:var(--r);padding:28px;width:300px;text-align:center}
+.auth-card h3{margin-bottom:14px}
+.auth-card input{width:100%;padding:10px;border:1.5px solid var(--bd);border-radius:8px;font-size:14px;text-align:center;margin-bottom:10px}
+.auth-card input:focus{outline:none;border-color:var(--gold)}
 
-/* ===== Guest Mode ===== */
-.guest-page { max-width:480px; margin:0 auto; background:#fff; min-height:100vh }
-.guest-header { background:linear-gradient(135deg,#2c3e50,#34495e); color:#fff; text-align:center; padding:24px 20px }
-.guest-header .hotel { font-size:13px; opacity:.7; letter-spacing:2px; margin-bottom:4px }
-.guest-header h2 { font-size:22px; font-weight:700 }
-.guest-content { padding:20px }
-.guest-images { display:flex; gap:8px; overflow-x:auto; margin-bottom:20px; -webkit-overflow-scrolling:touch }
-.guest-images img { width:calc(100vw - 80px); max-width:380px; height:240px; object-fit:cover; border-radius:10px; flex-shrink:0 }
-.guest-title { font-size:20px; font-weight:700; margin-bottom:12px; line-height:1.4 }
-.guest-body { font-size:15px; line-height:1.9; color:#444; white-space:pre-wrap; margin-bottom:16px }
-.guest-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px }
-.guest-tag { font-size:12px; background:#fdf8f0; color:#b8903a; padding:4px 12px; border-radius:14px }
-.guest-actions { display:flex; flex-direction:column; gap:12px; margin-bottom:24px }
-.guest-btn { width:100%; padding:14px; border-radius:25px; border:none; font-size:16px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:.2s }
-.guest-btn-copy { background:var(--primary); color:#fff }
-.guest-btn-copy:active { background:var(--primary-dark); transform:scale(.98) }
-.guest-btn-ctrip { background:#0fa87e; color:#fff }
-.guest-btn-ctrip:active { background:#0b8a68; transform:scale(.98) }
-.guest-steps { background:#f8f6f2; border-radius:var(--radius); padding:20px; margin-bottom:24px }
-.guest-steps h4 { font-size:14px; margin-bottom:12px; color:var(--text-light) }
-.guest-steps .step { display:flex; gap:12px; align-items:center; margin-bottom:10px; font-size:14px }
-.guest-steps .step-num { width:24px; height:24px; background:var(--primary); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0 }
-.guest-footer { text-align:center; padding:20px; color:#ccc; font-size:12px }
-.toast { position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#333; color:#fff; padding:10px 24px; border-radius:20px; font-size:14px; z-index:9999; opacity:0; transition:opacity .3s }
-.toast.show { opacity:1 }
-/* ===== Auth ===== */
-.auth-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; z-index:200 }
-.auth-box { background:#fff; border-radius:var(--radius); padding:30px; width:320px; text-align:center }
-.auth-box h3 { margin-bottom:16px }
-.auth-box input { width:100%; padding:10px; border:1.5px solid var(--border); border-radius:8px; font-size:14px; text-align:center; margin-bottom:12px }
-.auth-box input:focus { outline:none; border-color:var(--primary) }
-.hidden { display:none !important }
-
-@media (max-width:768px) {
-  .split { flex-direction:column }
-  .sidebar { width:100%; display:flex; overflow-x:auto; padding:10px; gap:8px }
-  .sidebar h3 { display:none }
-  .sidebar .tpl-item { white-space:nowrap; border-left:none; border-bottom:2px solid transparent }
-  .sidebar .tpl-item.active { border-left:none; border-bottom-color:var(--primary) }
-  .main { padding:16px }
-  .panel { flex-direction:column }
+@media(max-width:768px){
+  .admin-split{flex-direction:column}
+  .admin-sidebar{width:100%;display:flex;overflow-x:auto;padding:8px;gap:6px}
+  .admin-sidebar h3{display:none}
+  .admin-sidebar .tpl-item{white-space:nowrap;border-left:none;border-bottom:2px solid transparent}
+  .admin-sidebar .tpl-item.sel{border-left:none;border-bottom-color:var(--gold)}
+  .admin-main{padding:16px}
 }
 </style>
 </head>
 <body>
-
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<!-- Auth Overlay -->
-<div class="auth-overlay hidden" id="authOverlay">
-  <div class="auth-box">
-    <h3>🔐 管理端登录</h3>
-    <input type="password" id="pwdInput" placeholder="请输入管理密码" autofocus>
-    <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="doLogin()">进入管理端</button>
-    <p style="font-size:11px;color:#ccc;margin-top:10px">默认密码: 888888</p>
-  </div>
-</div>
-
-<!-- Loading -->
-<div id="loading" style="display:flex;align-items:center;justify-content:center;height:100vh;font-size:18px;color:#888">
-  加载中...
-</div>
-
-<!-- ===== GUEST MODE ===== -->
-<div id="guestMode" class="guest-page hidden">
-  <div class="guest-header">
-    <div class="hotel" id="gHotel">凯里中瑞天禧酒店</div>
-    <h2>邀您分享凯里之旅</h2>
-  </div>
-  <div class="guest-content">
-    <!-- Image Carousel -->
-    <div class="guest-images" id="gImages"></div>
-    <!-- Content -->
-    <div class="guest-title" id="gTitle"></div>
-    <div class="guest-body" id="gBody"></div>
-    <div class="guest-tags" id="gTags"></div>
-    <!-- Actions -->
-    <div class="guest-actions">
-      <button class="guest-btn guest-btn-copy" onclick="guestCopy()">📋 一键复制文案</button>
-      <button class="guest-btn guest-btn-ctrip" onclick="guestOpenCtrip()">📱 打开携程发旅拍</button>
+<!-- ==================== GUEST MODE ==================== -->
+<div id="guestMode">
+  <div class="guest-page">
+    <div class="guest-top">
+      <div class="hn">凯里 · 中瑞天禧酒店</div>
+      <h2>邀您分享凯里之旅</h2>
     </div>
-    <!-- Steps -->
-    <div class="guest-steps">
-      <h4>📝 发布步骤（30秒搞定）</h4>
-      <div class="step"><span class="step-num">1</span>点「一键复制文案」</div>
-      <div class="step"><span class="step-num">2</span>长按上方图片保存到手机</div>
-      <div class="step"><span class="step-num">3</span>点「打开携程发旅拍」</div>
-      <div class="step"><span class="step-num">4</span>粘贴文案 + 上传图片 + 发布</div>
+    <div class="guest-body" id="guestBody">
+      <!-- filled by JS -->
     </div>
     <div class="guest-footer">中瑞天禧酒店 · 期待您的再次光临</div>
   </div>
 </div>
 
-<!-- ===== ADMIN MODE ===== -->
+<!-- ==================== ADMIN MODE ==================== -->
 <div id="adminMode" class="hidden">
-  <div class="header">
-    <h1>🏨 酒店旅拍助手 <span class="badge">管理端</span></h1>
+  <div class="admin-header">
+    <h1>🏨 旅拍助手<span class="badge">管理端</span></h1>
     <div class="actions">
+      <button class="btn btn-outline btn-sm" onclick="doExport()">📥 导出并发布</button>
       <button class="btn btn-outline btn-sm" onclick="previewGuest()">👁 预览客人页</button>
-      <button class="btn btn-gray btn-sm" onclick="changePassword()">🔑 改密码</button>
-      <button class="btn btn-outline btn-sm" onclick="logout()">退出</button>
+      <button class="btn btn-gray btn-sm" onclick="adminLogout()">退出</button>
     </div>
   </div>
-  <div class="container">
-    <div class="split">
-      <!-- Sidebar -->
-      <div class="sidebar">
+  <div class="admin-container">
+    <div class="admin-split">
+      <div class="admin-sidebar">
         <h3>📄 模板列表</h3>
         <div id="tplList"></div>
-        <button class="btn btn-primary add-btn" onclick="newTemplate()">+ 新建模板</button>
+        <button class="btn btn-gold btn-sm" style="margin:8px 14px;width:calc(100% - 28px)" onclick="newTemplate()">+ 新建模板</button>
       </div>
-      <!-- Editor -->
-      <div class="main" id="editor">
+      <div class="admin-main" id="adminMain">
         <p style="color:#ccc;text-align:center;padding:60px 0">← 选择一个模板或新建</p>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Auth overlay -->
+<div class="auth-box hidden" id="authBox">
+  <div class="auth-card">
+    <h3>🔐 管理端登录</h3>
+    <input type="password" id="pwdInput" placeholder="请输入管理密码" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn btn-gold" style="width:100%;margin-top:4px" onclick="doLogin()">进入管理端</button>
+    <p style="font-size:11px;color:#ccc;margin-top:8px">默认密码: 888888</p>
+  </div>
+</div>
+
+<script id="tpl-data" type="application/json">
+[{"id":"t1","title":"村T+酸汤牛肉","hotelName":"中瑞天禧酒店","body":"来凯里看村T，住宿就选中瑞天禧酒店！\n\n📍 距离村T大门仅需打车5分钟，是村T周边品质最高的酒店之一\n\n🏨 房间设施人性化，服务充满人情味——不是冷冰冰的标准化流程，是真正把你当家人招待的温度\n\n🍜 酒店周边美食云集，本地最火的三家酸汤牛肉全在附近：\n   · 嘎嘎酸汤牛肉\n   · 苗阿哥酸汤牛肉\n   · 牛滚荡\n\n🌃 酒店背后就是夜市街！看完村T回来接着逛吃，烤肉、烙锅、冰粉……凯里的夜生活从这里开始\n\n#凯里酒店 #村T #贵州旅游 #酸汤牛肉 #凯里美食","tags":["凯里酒店","村T","贵州旅游","酸汤牛肉","凯里美食"],"images":[]},{"id":"t2","title":"夜市美食攻略","hotelName":"中瑞天禧酒店","body":"在凯里，最地道的夜生活就在中瑞天禧酒店周边！\n\n🌃 酒店背后就是凯里最热闹的夜市街，出门即达\n\n🍜 步行范围内3家必吃酸汤牛肉：\n   · 嘎嘎酸汤牛肉——酸汤浓郁，本地人最爱\n   · 苗阿哥酸汤牛肉——蘸水是灵魂\n   · 牛滚荡——名字接地气，味道绝了\n\n🥘 夜市必吃清单：烤鱼、烙锅、手搓冰粉、糯米饭、酸汤粉……\n\n🏨 看完村T（打车5分钟），回酒店放下东西，下楼就是夜市，完美！\n\n#凯里美食 #夜市 #酸汤牛肉 #凯里小吃 #贵州美食","tags":["凯里美食","夜市","酸汤牛肉","凯里小吃"],"images":[]},{"id":"t3","title":"酒店体验分享","hotelName":"中瑞天禧酒店","body":"住了这么多酒店，中瑞天禧是那种\"说不上哪里特别好，但住完会想念\"的地方。\n\n🛏 房间——村T周边品质最高之一，设施很人性化，床品舒适，隔音好\n\n💚 服务——不是冰冷的标准化流程，是真正有人情味的服务。前台会记得你喝不喝茶，会告诉你哪家酸汤牛肉最地道\n\n📍 位置——离村T打车5分钟，背后就是夜市街，去哪都方便\n\n🍜 周边——嘎嘎酸汤牛肉、苗阿哥酸汤牛肉、牛滚荡全在附近\n\n来凯里看村T，住这里就够了。\n\n#凯里酒店推荐 #村T #有人情味的酒店 #贵州旅行","tags":["凯里酒店推荐","村T","有人情味的酒店","贵州旅行"],"images":[]}]
+</script>
+
 <script>
-// ============ CONFIG ============
-const DEFAULT_PASSWORD = '888888';
-const STORAGE_KEY = 'travel_notes_templates';
-const SETTINGS_KEY = 'travel_notes_settings';
-
-// ============ MODE DETECTION ============
-const hash = location.hash;
-const isGuest = hash.startsWith('#guest');
-const isAdmin = hash.startsWith('#admin');
-const guestId = isGuest ? hash.replace('#guest?id=','').replace('#guest=','') : null;
-
-if (isGuest && guestId) {
-  document.getElementById('loading').classList.add('hidden');
-  initGuestMode(guestId);
-} else if (isAdmin) {
-  document.getElementById('loading').classList.add('hidden');
-  checkAdminAuth();
-} else {
-  // Default: show guest mode if there's guest data in URL, otherwise show admin
-  const params = new URLSearchParams(location.search);
-  const tplId = params.get('id') || params.get('tpl');
-  if (tplId) {
-    document.getElementById('loading').classList.add('hidden');
-    initGuestMode(tplId);
-  } else {
-    document.getElementById('loading').classList.add('hidden');
-    checkAdminAuth();
-  }
+// ============ DATA LAYER ============
+function loadTemplates(){
+  try{
+    var el=document.getElementById('tpl-data');
+    var raw=el.textContent.trim();
+    if(raw) return JSON.parse(raw);
+  }catch(e){console.error('解析模板数据失败',e)}
+  return [];
+}
+function saveTemplates(templates){
+  var el=document.getElementById('tpl-data');
+  el.textContent=JSON.stringify(templates);
 }
 
-// ============ AUTH ============
-function getPassword() {
-  try {
-    var raw = localStorage.getItem(SETTINGS_KEY);
-    if (raw) {
-      var parsed = JSON.parse(raw);
-      if (parsed && parsed.password) return parsed.password;
-    }
-  } catch(e) {
-    console.error('读取密码失败:', e);
-  }
-  return DEFAULT_PASSWORD;
-}
-
-function checkAdminAuth() {
-  try {
-    var authed = sessionStorage.getItem('admin_authed');
-    if (authed === 'true') {
-      showAdmin();
-      return;
-    }
-  } catch(e) {
-    console.error('读取登录状态失败:', e);
-  }
-  document.getElementById('authOverlay').classList.remove('hidden');
-  var pwdEl = document.getElementById('pwdInput');
-  if (pwdEl) pwdEl.focus();
-}
-
-function doLogin() {
-  try {
-    var input = document.getElementById('pwdInput').value.trim();
-    if (input === getPassword()) {
-      sessionStorage.setItem('admin_authed', 'true');
-      document.getElementById('authOverlay').classList.add('hidden');
-      showAdmin();
-    } else {
-      shake(document.getElementById('authOverlay'));
-      toast('密码错误');
-    }
-  } catch(e) {
-    console.error('登录失败:', e);
-    // Fallback: allow access
-    sessionStorage.setItem('admin_authed', 'true');
-    document.getElementById('authOverlay').classList.add('hidden');
-    showAdmin();
-  }
-}
-
-document.getElementById('pwdInput')?.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') doLogin();
-});
-
-function logout() {
-  sessionStorage.removeItem('admin_authed');
-  location.hash = '';
-  location.reload();
-}
-
-function changePassword() {
-  const old = prompt('请输入旧密码：');
-  if (old !== getPassword()) { toast('旧密码错误'); return; }
-  const newPwd = prompt('请输入新密码：');
-  if (!newPwd || newPwd.length < 4) { toast('密码至少4位'); return; }
-  const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
-  settings.password = newPwd;
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-  toast('密码修改成功！');
-}
+var TEMPLATES=loadTemplates();
+var SETTINGS={password:'888888',baseUrl:''};
+try{
+  var s=localStorage.getItem('tps_settings');
+  if(s) SETTINGS=JSON.parse(s);
+}catch(e){}
 
 // ============ TOAST ============
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._timeout);
-  t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show')},2000);
 }
 
-function shake(el) {
-  el.style.transform = 'translateX(-5px)';
-  setTimeout(() => { el.style.transform = 'translateX(5px)'; }, 80);
-  setTimeout(() => { el.style.transform = 'translateX(-3px)'; }, 160);
-  setTimeout(() => { el.style.transform = 'translateX(0)'; }, 240);
+// ============ MODE DETECTION ============
+(function(){
+  var params=new URLSearchParams(location.search);
+  if(params.get('admin')!==null||location.hash==='#admin'){
+    showAdminAuth();
+  }else{
+    showGuestMode();
+  }
+})();
+
+// ============ GUEST MODE ============
+function showGuestMode(){
+  document.getElementById('guestMode').classList.remove('hidden');
+  document.getElementById('adminMode').classList.add('hidden');
+  document.getElementById('authBox').classList.add('hidden');
+  renderGuestPage();
 }
 
-// ============ DATA ============
-function getTemplates() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-  } catch(e) {
-    return [];
+function renderGuestPage(){
+  var tpls=TEMPLATES;
+  var container=document.getElementById('guestBody');
+
+  if(tpls.length===0){
+    container.innerHTML='<div class="no-tpl"><div class="icon">📝</div><p>暂无分享模板</p><p style="font-size:12px;color:#ccc">请联系酒店前台</p></div>';
+    return;
+  }
+
+  var html='';
+
+  // If only one template, skip selector
+  if(tpls.length===1){
+    html+=renderTplDetail(tpls[0]);
+  }else{
+    html+='<div class="tpl-selector"><h3>📋 选择一条您喜欢的分享内容</h3><div class="tpl-cards">';
+    for(var i=0;i<tpls.length;i++){
+      html+='<div class="tpl-card'+(i===0?' active':'')+'" onclick="selectTpl('+i+')" id="tplCard'+i+'">';
+      html+='<div class="tpl-name">'+(i+1)+'. '+escHtml(tpls[i].title)+'</div>';
+      html+='<div class="tpl-preview">'+escHtml(tpls[i].body.split('\n')[0])+'</div>';
+      html+='</div>';
+    }
+    html+='</div></div><div id="tplDetail">'+renderTplDetail(tpls[0])+'</div>';
+  }
+
+  container.innerHTML=html;
+}
+
+function renderTplDetail(tpl){
+  var imgs='';
+  if(tpl.images&&tpl.images.length>0){
+    for(var i=0;i<tpl.images.length;i++){
+      imgs+='<img src="'+tpl.images[i]+'" alt="">';
+    }
+  }else{
+    imgs='<div style="width:100%;height:180px;background:#f5f0e8;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:14px">暂无图片 · 请联系酒店更新</div>';
+  }
+
+  var tags='';
+  if(tpl.tags&&tpl.tags.length>0){
+    for(var i=0;i<tpl.tags.length;i++){
+      tags+='<span class="d-tag">#'+escHtml(tpl.tags[i])+'</span>';
+    }
+  }
+
+  return '<div class="tpl-detail">'
+    +'<div class="imgs">'+imgs+'</div>'
+    +'<div class="d-title">'+escHtml(tpl.body.split('\n')[0])+'</div>'
+    +'<div class="d-body">'+escHtml(tpl.body)+'</div>'
+    +'<div class="d-tags">'+tags+'</div>'
+    +'<div class="guest-actions">'
+    +'<button class="btn btn-gold btn-full" onclick="guestCopy('+JSON.stringify(tpl.id)+')">📋 一键复制文案</button>'
+    +'<button class="btn btn-green btn-full" onclick="guestOpenCtrip()">📱 打开携程发旅拍</button>'
+    +'</div>'
+    +'<div class="steps"><h4>📝 发布步骤（30秒搞定）</h4>'
+    +'<div class="st"><span class="sn">1</span>点「一键复制文案」</div>'
+    +'<div class="st"><span class="sn">2</span>长按上方图片保存到手机相册</div>'
+    +'<div class="st"><span class="sn">3</span>点「打开携程发旅拍」</div>'
+    +'<div class="st"><span class="sn">4</span>粘贴文案 + 上传图片 + 发布</div>'
+    +'</div>';
+}
+
+function selectTpl(idx){
+  var cards=document.querySelectorAll('.tpl-card');
+  for(var i=0;i<cards.length;i++){cards[i].classList.remove('active')}
+  var card=document.getElementById('tplCard'+idx);
+  if(card) card.classList.add('active');
+  document.getElementById('tplDetail').innerHTML=renderTplDetail(TEMPLATES[idx]);
+}
+
+function guestCopy(tplId){
+  var tpl=null;
+  for(var i=0;i<TEMPLATES.length;i++){if(TEMPLATES[i].id===tplId){tpl=TEMPLATES[i];break}}
+  if(!tpl){toast('内容未找到');return}
+  var text=tpl.body;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){toast('✅ 文案已复制！去携程粘贴吧')}).catch(function(){fallbackCopy(text)});
+  }else{fallbackCopy(text)}
+}
+
+function fallbackCopy(text){
+  var ta=document.createElement('textarea');ta.value=text;
+  ta.style.cssText='position:fixed;left:-9999px;top:-9999px';
+  document.body.appendChild(ta);ta.focus();ta.select();
+  try{document.execCommand('copy');toast('✅ 文案已复制！去携程粘贴吧')}catch(e){toast('复制失败，请手动选择文字复制')}
+  document.body.removeChild(ta);
+}
+
+function guestOpenCtrip(){
+  var start=Date.now();
+  var iframe=document.createElement('iframe');iframe.style.display='none';iframe.src='ctrip://';
+  document.body.appendChild(iframe);
+  setTimeout(function(){
+    document.body.removeChild(iframe);
+    if(Date.now()-start<2500) window.location.href='https://you.ctrip.com/travels/';
+  },2000);
+  setTimeout(function(){window.location.href='ctrip://'},100);
+}
+
+// ============ ADMIN AUTH ============
+function showAdminAuth(){
+  document.getElementById('guestMode').classList.add('hidden');
+  document.getElementById('adminMode').classList.add('hidden');
+  document.getElementById('authBox').classList.remove('hidden');
+  document.getElementById('pwdInput').focus();
+}
+
+function doLogin(){
+  var input=document.getElementById('pwdInput').value.trim();
+  if(input===SETTINGS.password){
+    document.getElementById('authBox').classList.add('hidden');
+    showAdminMode();
+  }else{
+    toast('密码错误');
+    document.getElementById('pwdInput').value='';
+    document.getElementById('pwdInput').focus();
   }
 }
 
-function saveTemplates(templates) {
-  // Handle large images: use a simple compression approach
-  // Warn if total storage > 3MB
-  const json = JSON.stringify(templates);
-  if (json.length > 4 * 1024 * 1024) {
-    toast('⚠ 数据较大，建议压缩图片后再添加');
-  }
-  localStorage.setItem(STORAGE_KEY, json);
+function adminLogout(){
+  document.getElementById('adminMode').classList.add('hidden');
+  showAdminAuth();
 }
 
-function getTemplate(id) {
-  return getTemplates().find(t => t.id === id);
-}
+// ============ ADMIN MODE ============
+var activeTplId=null;
 
-// ============ ADMIN UI ============
-let activeTplId = null;
-
-function showAdmin() {
+function showAdminMode(){
   document.getElementById('adminMode').classList.remove('hidden');
   document.getElementById('guestMode').classList.add('hidden');
   renderSidebar();
-  // Auto-select first template
-  const templates = getTemplates();
-  if (templates.length > 0 && !activeTplId) {
-    selectTemplate(templates[0].id);
-  }
+  if(TEMPLATES.length>0&&!activeTplId) openEditor(TEMPLATES[0].id);
 }
 
-function renderSidebar() {
-  const templates = getTemplates();
-  const list = document.getElementById('tplList');
-  list.innerHTML = templates.map(t => `
-    <div class="tpl-item ${t.id === activeTplId ? 'active' : ''}" onclick="selectTemplate('${t.id}')">
-      <span>${t.title || '未命名模板'}</span>
-      <span class="del" onclick="event.stopPropagation();deleteTemplate('${t.id}')">✕</span>
-    </div>
-  `).join('');
-  if (templates.length === 0) {
-    list.innerHTML = '<p style="color:#ccc;font-size:13px;padding:16px;text-align:center">暂无模板<br>点击下方按钮新建</p>';
+function renderSidebar(){
+  var list=document.getElementById('tplList');
+  var html='';
+  for(var i=0;i<TEMPLATES.length;i++){
+    var t=TEMPLATES[i];
+    html+='<div class="tpl-item'+(t.id===activeTplId?' sel':'')+'" onclick="openEditor(\''+t.id+'\')">';
+    html+='<span>'+escHtml(t.title||'未命名')+'</span>';
+    html+='<span class="del" onclick="event.stopPropagation();deleteTpl(\''+t.id+'\')">✕</span>';
+    html+='</div>';
   }
+  if(TEMPLATES.length===0) html='<p style="color:#ccc;font-size:12px;padding:14px;text-align:center">暂无模板<br>点击下方新建</p>';
+  list.innerHTML=html;
 }
 
-function newTemplate() {
-  const templates = getTemplates();
-  const tpl = {
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2,6),
-    title: '新建模板',
-    body: '',
-    tags: [],
-    images: [],
-    hotelName: '凯里中瑞天禧酒店',
-    createdAt: Date.now()
-  };
-  templates.push(tpl);
-  saveTemplates(templates);
-  activeTplId = tpl.id;
+function newTemplate(){
+  var tpl={id:'t'+Date.now(),title:'新建模板',hotelName:'中瑞天禧酒店',body:'',tags:[],images:[]};
+  TEMPLATES.push(tpl);
+  saveTemplates(TEMPLATES);
+  activeTplId=tpl.id;
   renderSidebar();
   renderEditor(tpl);
+  toast('✅ 新模板已创建');
 }
 
-function selectTemplate(id) {
-  activeTplId = id;
+function openEditor(id){
+  activeTplId=id;
   renderSidebar();
-  const tpl = getTemplate(id);
-  if (tpl) renderEditor(tpl);
+  var tpl=null;
+  for(var i=0;i<TEMPLATES.length;i++){if(TEMPLATES[i].id===id){tpl=TEMPLATES[i];break}}
+  if(tpl) renderEditor(tpl);
 }
 
-function deleteTemplate(id) {
-  if (!confirm('确定删除这个模板吗？此操作不可恢复。')) return;
-  let templates = getTemplates();
-  templates = templates.filter(t => t.id !== id);
-  saveTemplates(templates);
-  if (activeTplId === id) {
-    activeTplId = templates.length > 0 ? templates[0].id : null;
+function deleteTpl(id){
+  if(!confirm('确定删除这个模板吗？')) return;
+  var newList=[];
+  for(var i=0;i<TEMPLATES.length;i++){if(TEMPLATES[i].id!==id) newList.push(TEMPLATES[i])}
+  TEMPLATES=newList;
+  saveTemplates(TEMPLATES);
+  activeTplId=TEMPLATES.length>0?TEMPLATES[0].id:null;
+  renderSidebar();
+  if(activeTplId) openEditor(activeTplId);
+  else document.getElementById('adminMain').innerHTML='<p style="color:#ccc;text-align:center;padding:60px 0">← 新建一个模板开始吧</p>';
+}
+
+function renderEditor(tpl){
+  var tagsStr=tpl.tags?tpl.tags.join(','):'';
+  var imgsHtml='';
+  if(tpl.images){
+    for(var i=0;i<tpl.images.length;i++){
+      imgsHtml+='<div class="img-card"><img src="'+tpl.images[i]+'" alt=""><span class="rm" onclick="removeImg(\''+tpl.id+'\','+i+')">✕</span></div>';
+    }
   }
-  renderSidebar();
-  if (activeTplId) {
-    const tpl = getTemplate(activeTplId);
-    if (tpl) renderEditor(tpl);
-  } else {
-    document.getElementById('editor').innerHTML = '<p style="color:#ccc;text-align:center;padding:60px 0">← 新建一个模板开始吧</p>';
+  imgsHtml+='<div class="img-card add" onclick="addImages(\''+tpl.id+'\')">+</div>';
+
+  var main=document.getElementById('adminMain');
+  main.innerHTML=''
+    +'<div class="form-group"><label>模板名称（在模板列表中显示）</label><input type="text" id="eTitle" value="'+escHtml(tpl.title||'')+'"></div>'
+    +'<div class="form-group"><label>文案内容（客人将一键复制这段文字）</label><textarea id="eBody">'+escHtml(tpl.body||'')+'</textarea></div>'
+    +'<div class="form-group"><label>标签（逗号分隔）</label><input type="text" id="eTags" value="'+escHtml(tagsStr)+'" placeholder="凯里酒店,村T,贵州旅游"></div>'
+    +'<div class="form-group"><label>图片（客人可长按保存，建议3-6张，每张≤500KB）</label><div class="img-grid" id="imgGrid">'+imgsHtml+'</div></div>'
+    +'<div style="display:flex;gap:8px;margin-bottom:16px">'
+    +'<button class="btn btn-gold" onclick="saveTpl(\''+tpl.id+'\')">💾 保存</button>'
+    +'<button class="btn btn-gray" onclick="openEditor(\''+tpl.id+'\')">↺ 放弃</button>'
+    +'</div>'
+    +'<div class="export-box">'
+    +'<div class="info"><h4>📥 导出并发布</h4><p>保存修改后点导出，下载一个全新的HTML文件。<br>上传到 GitHub 即可更新客人扫码看到的页面。</p></div>'
+    +'<button class="btn btn-gold" onclick="doExport()">📥 导出 HTML</button>'
+    +'</div>';
+}
+
+function saveTpl(id){
+  for(var i=0;i<TEMPLATES.length;i++){
+    if(TEMPLATES[i].id===id){
+      TEMPLATES[i].title=document.getElementById('eTitle').value.trim()||'未命名';
+      TEMPLATES[i].body=document.getElementById('eBody').value;
+      var ts=document.getElementById('eTags').value.trim();
+      TEMPLATES[i].tags=ts?ts.split(/[,，]/).map(function(x){return x.trim()}).filter(Boolean):[];
+      saveTemplates(TEMPLATES);
+      renderSidebar();
+      toast('✅ 模板已保存');
+      return;
+    }
   }
 }
 
-function renderEditor(tpl) {
-  const editor = document.getElementById('editor');
-  editor.innerHTML = `
-    <div class="form-group">
-      <label>酒店名称（显示在客人页面顶部）</label>
-      <input type="text" id="eHotelName" value="${escHtml(tpl.hotelName || '')}" placeholder="如：凯里中瑞天禧酒店">
-    </div>
-    <div class="form-group">
-      <label>模板标题</label>
-      <input type="text" id="eTitle" value="${escHtml(tpl.title || '')}" placeholder="给模板起个名字，方便自己识别">
-    </div>
-    <div class="form-group">
-      <label>旅拍正文（客人将一键复制这段文字）</label>
-      <textarea id="eBody" placeholder="写下想让客人发布的旅拍内容...&#10;&#10;例如：&#10;来凯里看村T，住中瑞天禧酒店太方便了！&#10;打车5分钟就到村T大门，酒店周边还有嘎嘎酸汤牛肉、苗阿哥酸汤牛肉、牛滚荡三家名店...">${escHtml(tpl.body || '')}</textarea>
-    </div>
-    <div class="form-group">
-      <label>标签（用逗号分隔，如：凯里酒店,村T,酸汤牛肉）</label>
-      <input type="text" id="eTags" value="${escHtml((tpl.tags || []).join(','))}" placeholder="凯里酒店,村T,贵州旅游">
-    </div>
-    <div class="form-group">
-      <label>图片（建议 3-6 张，客人可长按保存后发到携程）</label>
-      <div class="img-grid" id="imgGrid">
-        ${(tpl.images || []).map((img, i) => `
-          <div class="img-card">
-            <img src="${img}" alt="">
-            <span class="remove" onclick="removeImage('${tpl.id}', ${i})">✕</span>
-          </div>
-        `).join('')}
-        <div class="img-card add" onclick="addImage('${tpl.id}')">+</div>
-      </div>
-      <p style="font-size:11px;color:#aaa;margin-top:6px">点击 + 上传图片。为方便客人下载，建议图片不超过 500KB。</p>
-    </div>
-
-    <!-- QR & Export -->
-    <div class="panel">
-      <div class="qr-box">
-        <div id="qrCanvas"></div>
-        <p>客人扫码即可查看</p>
-      </div>
-      <div class="export-info">
-        <h4>📱 如何让客人扫码使用？</h4>
-        <ol>
-          <li>点击下方「导出客人页」按钮</li>
-          <li>将下载的 <strong>guest.html</strong> 上传到 GitHub Pages</li>
-          <li>客人退房时扫描二维码即可</li>
-          <li style="color:var(--primary);font-weight:500">或直接用浏览器打开 guest.html 测试</li>
-        </ol>
-        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn btn-primary" onclick="exportGuestPage('${tpl.id}')">📥 导出客人页</button>
-          <button class="btn btn-outline btn-sm" onclick="previewGuest()">👁 预览</button>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:16px;display:flex;gap:8px">
-      <button class="btn btn-primary" onclick="saveTemplate('${tpl.id}')">💾 保存模板</button>
-      <button class="btn btn-gray" onclick="selectTemplate('${tpl.id}')">↺ 放弃修改</button>
-    </div>
-  `;
-
-  // Generate QR Code
-  setTimeout(() => generateQR(tpl.id), 200);
-}
-
-function saveTemplate(id) {
-  const templates = getTemplates();
-  const idx = templates.findIndex(t => t.id === id);
-  if (idx === -1) return;
-
-  const hotelName = document.getElementById('eHotelName')?.value.trim() || '凯里中瑞天禧酒店';
-  const title = document.getElementById('eTitle')?.value.trim() || '未命名';
-  const body = document.getElementById('eBody')?.value.trim() || '';
-  const tagsStr = document.getElementById('eTags')?.value.trim() || '';
-  const tags = tagsStr ? tagsStr.split(/[,，]/).map(t => t.trim()).filter(Boolean) : [];
-
-  templates[idx].hotelName = hotelName;
-  templates[idx].title = title;
-  templates[idx].body = body;
-  templates[idx].tags = tags;
-  templates[idx].updatedAt = Date.now();
-
-  saveTemplates(templates);
-  renderSidebar();
-  toast('✅ 模板已保存');
-}
-
-function escHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
-
-// ============ IMAGE HANDLING ============
-function addImage(tplId) {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.multiple = true;
-  input.onchange = function() {
-    const files = Array.from(input.files);
-    if (files.length === 0) return;
-    const templates = getTemplates();
-    const idx = templates.findIndex(t => t.id === tplId);
-    if (idx === -1) return;
-
-    let loaded = 0;
-    files.forEach(file => {
-      if (file.size > 2 * 1024 * 1024) {
-        toast('⚠ 图片 "' + file.name + '" 超过2MB，建议先压缩');
-      }
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        // Simple resize for large images
-        const img = new Image();
-        img.onload = function() {
-          let dataUrl = e.target.result;
-          // If image > 1MB or > 1200px wide, resize
-          if (file.size > 500 * 1024 || img.width > 1200) {
-            const canvas = document.createElement('canvas');
-            const scale = Math.min(1, 1200 / img.width);
-            canvas.width = img.width * scale;
-            canvas.height = img.height * scale;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+function addImages(tplId){
+  var inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.multiple=true;
+  inp.onchange=function(){
+    var files=Array.from(inp.files);if(files.length===0) return;
+    var tpl=null;
+    for(var i=0;i<TEMPLATES.length;i++){if(TEMPLATES[i].id===tplId){tpl=TEMPLATES[i];break}}
+    if(!tpl) return;
+    var loaded=0;
+    files.forEach(function(file){
+      var reader=new FileReader();
+      reader.onload=function(e){
+        var img=new Image();
+        img.onload=function(){
+          var dataUrl=e.target.result;
+          if(file.size>500*1024||img.width>1200){
+            var canvas=document.createElement('canvas');
+            var scale=Math.min(1,1200/img.width);
+            canvas.width=img.width*scale;canvas.height=img.height*scale;
+            var ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,canvas.width,canvas.height);
+            dataUrl=canvas.toDataURL('image/jpeg',0.8);
           }
-          templates[idx].images = templates[idx].images || [];
-          templates[idx].images.push(dataUrl);
-          saveTemplates(templates);
-          renderEditor(templates[idx]);
+          tpl.images.push(dataUrl);
+          saveTemplates(TEMPLATES);
+          renderEditor(tpl);
           toast('✅ 图片已添加');
         };
-        img.src = e.target.result;
+        img.src=e.target.result;
       };
       reader.readAsDataURL(file);
     });
   };
-  input.click();
+  inp.click();
 }
 
-function removeImage(tplId, imgIdx) {
-  const templates = getTemplates();
-  const idx = templates.findIndex(t => t.id === tplId);
-  if (idx === -1) return;
-  templates[idx].images.splice(imgIdx, 1);
-  saveTemplates(templates);
-  renderEditor(templates[idx]);
-  toast('图片已移除');
-}
-
-// ============ QR CODE ============
-function generateQR(tplId) {
-  const container = document.getElementById('qrCanvas');
-  if (!container) return;
-  container.innerHTML = '';
-
-  // The QR code points to this same file with guest mode
-  // The admin should set the base URL in production
-  const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
-  const baseUrl = settings.baseUrl || (location.origin + location.pathname);
-  const url = baseUrl + '#guest?id=' + tplId;
-
-  // Use QRCode.js from CDN
-  if (typeof QRCode === 'undefined') {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
-    script.onload = () => {
-      new QRCode(container, {
-        text: url,
-        width: 150,
-        height: 150,
-        colorDark: '#333',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    };
-    script.onerror = () => {
-      // Fallback CDN
-      const script2 = document.createElement('script');
-      script2.src = 'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';
-      script2.onload = () => {
-        new QRCode(container, {
-          text: url,
-          width: 150,
-          height: 150,
-          colorDark: '#333',
-          colorLight: '#ffffff',
-          correctLevel: QRCode.CorrectLevel.M
-        });
-      };
-      script2.onerror = () => {
-        container.innerHTML = '<p style="color:red;font-size:12px">QR库加载失败<br>请检查网络连接</p>';
-      };
-      document.head.appendChild(script2);
-    };
-    document.head.appendChild(script);
-  } else {
-    new QRCode(container, {
-      text: url,
-      width: 150,
-      height: 150,
-      colorDark: '#333',
-      colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.M
-    });
+function removeImg(tplId,idx){
+  for(var i=0;i<TEMPLATES.length;i++){
+    if(TEMPLATES[i].id===tplId){
+      TEMPLATES[i].images.splice(idx,1);
+      saveTemplates(TEMPLATES);
+      renderEditor(TEMPLATES[i]);
+      return;
+    }
   }
 }
 
-// ============ EXPORT GUEST PAGE ============
-function exportGuestPage(tplId) {
-  const tpl = getTemplate(tplId);
-  if (!tpl) { toast('请先保存模板'); return; }
+// ============ EXPORT ============
+function doExport(){
+  if(!activeTplId){toast('请先选择一个模板');return}
+  saveTpl(activeTplId);
 
-  const guestHTML = generateGuestHTML(tpl);
-  const blob = new Blob([guestHTML], { type: 'text/html;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'guest.html';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  // Update template data in the script tag
+  saveTemplates(TEMPLATES);
+
+  // Serialize the entire HTML
+  var html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+
+  // Download
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;a.download='index.html';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  toast('✅ 客人页已导出！');
-}
-
-function generateGuestHTML(tpl) {
-  const imagesHTML = (tpl.images || []).map(img =>
-    `<img src="${img}" alt="" oncontextmenu="return false">`
-  ).join('\n');
-
-  const tagsHTML = (tpl.tags || []).map(tag =>
-    `<span class="guest-tag">#${tag}</span>`
-  ).join('\n');
-
-  // Build a self-contained HTML with all data embedded
-  // The QR code for this exported page will point back to itself
-  return `<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${escHtml(tpl.hotelName)} - 邀您分享凯里之旅</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box }
-body { font-family:"PingFang SC","Microsoft YaHei",sans-serif; background:#f5f0e8 }
-.guest-page { max-width:480px; margin:0 auto; background:#fff; min-height:100vh }
-.guest-header { background:linear-gradient(135deg,#2c3e50,#34495e); color:#fff; text-align:center; padding:24px 20px }
-.guest-header .hotel { font-size:13px; opacity:.7; letter-spacing:2px; margin-bottom:4px }
-.guest-header h2 { font-size:22px; font-weight:700 }
-.guest-content { padding:20px }
-.guest-images { display:flex; gap:8px; overflow-x:auto; margin-bottom:20px; -webkit-overflow-scrolling:touch; scroll-snap-type:x mandatory }
-.guest-images img { width:calc(100vw - 80px); max-width:380px; height:240px; object-fit:cover; border-radius:10px; flex-shrink:0; scroll-snap-align:center }
-.guest-title { font-size:20px; font-weight:700; margin-bottom:12px; line-height:1.4 }
-.guest-body { font-size:15px; line-height:1.9; color:#444; white-space:pre-wrap; margin-bottom:16px }
-.guest-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px }
-.guest-tag { font-size:12px; background:#fdf8f0; color:#b8903a; padding:4px 12px; border-radius:14px }
-.guest-actions { display:flex; flex-direction:column; gap:12px; margin-bottom:24px }
-.guest-btn { width:100%; padding:14px; border-radius:25px; border:none; font-size:16px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:.2s; -webkit-tap-highlight-color:transparent }
-.guest-btn-copy { background:#d4a853; color:#fff }
-.guest-btn-copy:active { background:#b8903a; transform:scale(.98) }
-.guest-btn-ctrip { background:#0fa87e; color:#fff }
-.guest-btn-ctrip:active { background:#0b8a68; transform:scale(.98) }
-.guest-steps { background:#f8f6f2; border-radius:12px; padding:20px; margin-bottom:24px }
-.guest-steps h4 { font-size:14px; margin-bottom:12px; color:#888 }
-.guest-steps .step { display:flex; gap:12px; align-items:center; margin-bottom:10px; font-size:14px }
-.guest-steps .step-num { width:24px; height:24px; background:#d4a853; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0 }
-.guest-footer { text-align:center; padding:20px; color:#ccc; font-size:12px }
-.toast { position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#333; color:#fff; padding:10px 24px; border-radius:20px; font-size:14px; z-index:9999; opacity:0; transition:opacity .3s; pointer-events:none }
-.toast.show { opacity:1 }
-</style>
-</head>
-<body>
-<div class="guest-page">
-  <div class="guest-header">
-    <div class="hotel">${escHtml(tpl.hotelName)}</div>
-    <h2>邀您分享凯里之旅</h2>
-  </div>
-  <div class="guest-content">
-    <div class="guest-images">
-      ${imagesHTML}
-    </div>
-    <div class="guest-title">${escHtml(tpl.body.split('\n')[0] || '分享我的凯里之旅')}</div>
-    <div class="guest-body">${escHtml(tpl.body)}</div>
-    <div class="guest-tags">${tagsHTML}</div>
-    <div class="guest-actions">
-      <button class="guest-btn guest-btn-copy" onclick="copyText()">📋 一键复制文案</button>
-      <button class="guest-btn guest-btn-ctrip" onclick="openCtrip()">📱 打开携程发旅拍</button>
-    </div>
-    <div class="guest-steps">
-      <h4>📝 发布步骤（30秒搞定）</h4>
-      <div class="step"><span class="step-num">1</span>点「一键复制文案」</div>
-      <div class="step"><span class="step-num">2</span>长按上方图片保存到手机</div>
-      <div class="step"><span class="step-num">3</span>点「打开携程发旅拍」</div>
-      <div class="step"><span class="step-num">4</span>粘贴文案 + 上传图片 + 发布</div>
-    </div>
-    <div class="guest-footer">${escHtml(tpl.hotelName)} · 期待您的再次光临</div>
-  </div>
-</div>
-<div class="toast" id="toast"></div>
-<script>
-const CONTENT = ${JSON.stringify(tpl.body)};
-
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._timeout);
-  t._timeout = setTimeout(() => t.classList.remove('show'), 2000);
-}
-
-function copyText() {
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(CONTENT).then(() => {
-      toast('✅ 文案已复制！去携程粘贴吧');
-    }).catch(() => {
-      fallbackCopy();
-    });
-  } else {
-    fallbackCopy();
-  }
-}
-
-function fallbackCopy() {
-  const ta = document.createElement('textarea');
-  ta.value = CONTENT;
-  ta.style.position = 'fixed';
-  ta.style.left = '-9999px';
-  ta.style.top = '-9999px';
-  document.body.appendChild(ta);
-  ta.focus();
-  ta.select();
-  try {
-    document.execCommand('copy');
-    toast('✅ 文案已复制！去携程粘贴吧');
-  } catch(e) {
-    toast('复制失败，请手动选择文字复制');
-  }
-  document.body.removeChild(ta);
-}
-
-function openCtrip() {
-  // Try to open Ctrip app first
-  const now = Date.now();
-  const schemes = ['ctrip://', 'trip://'];
-  let opened = false;
-
-  // Try URL scheme
-  const iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.src = 'ctrip://';
-  document.body.appendChild(iframe);
-
-  setTimeout(() => {
-    document.body.removeChild(iframe);
-    if (Date.now() - now < 2500) {
-      // App not opened, fallback to Ctrip website
-      window.location.href = 'https://you.ctrip.com/travels/';
-    }
-  }, 2000);
-
-  // Also try direct navigation
-  setTimeout(() => {
-    window.location.href = 'ctrip://';
-  }, 100);
-}
-
-// Hint: long press images to save
-document.querySelectorAll('.guest-images img').forEach(img => {
-  img.addEventListener('contextmenu', e => e.preventDefault());
-});
-<\\/script>
-</body>
-</html>`;
-}
-
-// ============ GUEST MODE ============
-function initGuestMode(tplId) {
-  const tpl = getTemplate(tplId);
-  if (!tpl) {
-    document.getElementById('loading').innerHTML = '<div style="text-align:center;padding:60px"><h2>😕 内容未找到</h2><p style="color:#888;margin-top:8px">请联系酒店前台获取最新二维码</p></div>';
-    return;
-  }
-  document.getElementById('loading').classList.add('hidden');
-  const guest = document.getElementById('guestMode');
-  guest.classList.remove('hidden');
-
-  document.getElementById('gHotel').textContent = tpl.hotelName || '凯里中瑞天禧酒店';
-  document.getElementById('gTitle').textContent = tpl.body ? tpl.body.split('\n')[0] : '分享我的凯里之旅';
-  document.getElementById('gBody').textContent = tpl.body || '';
-  document.getElementById('gTags').innerHTML = (tpl.tags || []).map(t => `<span class="guest-tag">#${t}</span>`).join('');
-
-  const imgContainer = document.getElementById('gImages');
-  if (tpl.images && tpl.images.length > 0) {
-    imgContainer.innerHTML = tpl.images.map(img => `<img src="${img}" alt="">`).join('');
-  } else {
-    imgContainer.innerHTML = '<p style="color:#ccc;text-align:center;width:100%;padding:40px">暂无图片</p>';
-  }
-
-  // Store current content for copy
-  window._guestContent = tpl.body || '';
-}
-
-function guestCopy() {
-  const content = window._guestContent || '';
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(content).then(() => {
-      toast('✅ 文案已复制！去携程粘贴吧');
-    }).catch(() => fallbackCopy(content));
-  } else {
-    fallbackCopy(content);
-  }
-}
-
-function fallbackCopy(text) {
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.position = 'fixed';
-  ta.style.left = '-9999px';
-  ta.style.top = '-9999px';
-  document.body.appendChild(ta);
-  ta.focus();
-  ta.select();
-  try {
-    document.execCommand('copy');
-    toast('✅ 文案已复制！去携程粘贴吧');
-  } catch(e) {
-    toast('复制失败，请手动选择文字复制');
-  }
-  document.body.removeChild(ta);
-}
-
-function guestOpenCtrip() {
-  const now = Date.now();
-  const iframe = document.createElement('iframe');
-  iframe.style.display = 'none';
-  iframe.src = 'ctrip://';
-  document.body.appendChild(iframe);
-  setTimeout(() => {
-    document.body.removeChild(iframe);
-    if (Date.now() - now < 2500) {
-      window.location.href = 'https://you.ctrip.com/travels/';
-    }
-  }, 2000);
-  setTimeout(() => { window.location.href = 'ctrip://'; }, 100);
+  toast('✅ 已导出 index.html！上传到 GitHub 即可更新');
 }
 
 // ============ PREVIEW ============
-function previewGuest() {
-  if (!activeTplId) { toast('请先选择一个模板'); return; }
-  const tpl = getTemplate(activeTplId);
-  if (!tpl) { toast('模板不存在'); return; }
-
-  // Open guest mode in new tab
-  const url = location.origin + location.pathname + '#guest?id=' + activeTplId;
-  window.open(url, '_blank');
+function previewGuest(){
+  if(!activeTplId){toast('请先选择一个模板');return}
+  saveTpl(activeTplId);
+  // Save current state then switch to guest mode preview
+  saveTemplates(TEMPLATES);
+  var params=new URLSearchParams(location.search);
+  var url=location.origin+location.pathname;
+  window.open(url,'_blank');
 }
 
-// ============ INIT ============
-// Load QRCode.js early
-(function loadQRLib() {
-  if (typeof QRCode === 'undefined') {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
-    script.onerror = () => {
-      const s2 = document.createElement('script');
-      s2.src = 'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';
-      document.head.appendChild(s2);
-    };
-    document.head.appendChild(script);
-  }
-})();
+// ============ UTILS ============
+function escHtml(str){
+  var d=document.createElement('div');d.textContent=str;return d.innerHTML;
+}
 </script>
 </body>
 </html>
