@@ -40,7 +40,16 @@ body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg)
 
 /* Template detail */
 .tpl-detail .imgs{display:flex;gap:8px;overflow-x:auto;margin-bottom:16px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding-bottom:4px}
-.tpl-detail .imgs img{width:calc(100vw - 80px);max-width:380px;height:240px;object-fit:cover;border-radius:10px;flex-shrink:0;scroll-snap-align:center}
+.tpl-detail .imgs .img-wrap{position:relative;flex-shrink:0;scroll-snap-align:center}
+.tpl-detail .imgs img{width:calc(100vw - 80px);max-width:380px;height:240px;object-fit:cover;border-radius:10px;display:block}
+.img-save-btn{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;border:none;padding:6px 12px;border-radius:16px;font-size:12px;cursor:pointer;backdrop-filter:blur(4px)}
+.img-save-btn:active{background:rgba(0,0,0,.8)}
+
+/* Image viewer */
+.img-viewer{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:300;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.img-viewer img{max-width:95vw;max-height:70vh;object-fit:contain;border-radius:8px}
+.img-viewer .close{position:absolute;top:16px;right:16px;color:#fff;font-size:28px;cursor:pointer;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
+.img-viewer .save-big{background:var(--gold);color:#fff;border:none;padding:12px 30px;border-radius:22px;font-size:16px;margin-top:16px;cursor:pointer}
 .tpl-detail .d-title{font-size:20px;font-weight:700;margin-bottom:10px;line-height:1.4}
 .tpl-detail .d-body{font-size:15px;line-height:1.9;color:#444;white-space:pre-wrap;margin-bottom:14px}
 .tpl-detail .d-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
@@ -233,9 +242,10 @@ function renderGuestPage(){
 
 function renderTplDetail(tpl){
   var imgs='';
-  if(tpl.images&&tpl.images.length>0){
+  var hasImages=tpl.images&&tpl.images.length>0;
+  if(hasImages){
     for(var i=0;i<tpl.images.length;i++){
-      imgs+='<img src="'+tpl.images[i]+'" alt="">';
+      imgs+='<div class="img-wrap"><img src="'+tpl.images[i]+'" alt="" onclick="viewImage(\''+tpl.id+'\','+i+')"><button class="img-save-btn" onclick="guestSaveImage(\''+tpl.id+'\','+i+')">💾 保存</button></div>';
     }
   }else{
     imgs='<div style="width:100%;height:180px;background:#f5f0e8;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:14px">暂无图片 · 请联系酒店更新</div>';
@@ -248,20 +258,26 @@ function renderTplDetail(tpl){
     }
   }
 
+  var saveAllBtn='';
+  if(hasImages&&tpl.images.length>1){
+    saveAllBtn='<button class="btn btn-outline btn-full" onclick="guestSaveAll(\''+tpl.id+'\')">📥 一键保存全部图片（'+tpl.images.length+'张）</button>';
+  }
+
   return '<div class="tpl-detail">'
     +'<div class="imgs">'+imgs+'</div>'
     +'<div class="d-title">'+escHtml(tpl.body.split('\n')[0])+'</div>'
     +'<div class="d-body">'+escHtml(tpl.body)+'</div>'
     +'<div class="d-tags">'+tags+'</div>'
     +'<div class="guest-actions">'
-    +'<button class="btn btn-gold btn-full" onclick="guestCopy('+JSON.stringify(tpl.id)+')">📋 一键复制文案</button>'
+    +'<button class="btn btn-gold btn-full" onclick="guestCopy(\''+tpl.id+'\')">📋 一键复制文案</button>'
+    +saveAllBtn
     +'<button class="btn btn-green btn-full" onclick="guestOpenCtrip()">📱 打开携程发旅拍</button>'
     +'</div>'
     +'<div class="steps"><h4>📝 发布步骤（30秒搞定）</h4>'
     +'<div class="st"><span class="sn">1</span>点「一键复制文案」</div>'
-    +'<div class="st"><span class="sn">2</span>长按上方图片保存到手机相册</div>'
+    +'<div class="st"><span class="sn">2</span>点每张图下的「保存」按钮存到相册</div>'
     +'<div class="st"><span class="sn">3</span>点「打开携程发旅拍」</div>'
-    +'<div class="st"><span class="sn">4</span>粘贴文案 + 上传图片 + 发布</div>'
+    +'<div class="st"><span class="sn">4</span>粘贴文案 + 上传刚保存的图片 + 发布</div>'
     +'</div>';
 }
 
@@ -300,6 +316,56 @@ function guestOpenCtrip(){
     if(Date.now()-start<2500) window.location.href='https://you.ctrip.com/travels/';
   },2000);
   setTimeout(function(){window.location.href='ctrip://'},100);
+}
+
+// ============ IMAGE SAVE ============
+function guestSaveImage(tplId,idx){
+  var tpl=null;
+  for(var i=0;i<TEMPLATES.length;i++){if(TEMPLATES[i].id===tplId){tpl=TEMPLATES[i];break}}
+  if(!tpl||!tpl.images||!tpl.images[idx]) return;
+  var dataUrl=tpl.images[idx];
+  // Try download approach
+  var a=document.createElement('a');
+  a.href=dataUrl;
+  a.download='中瑞天禧酒店_'+(idx+1)+'.jpg';
+  a.style.display='none';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  toast('📥 图片保存中…如未自动下载，请长按图片选择保存');
+}
+
+function guestSaveAll(tplId){
+  var tpl=null;
+  for(var i=0;i<TEMPLATES.length;i++){if(TEMPLATES[i].id===tplId){tpl=TEMPLATES[i];break}}
+  if(!tpl||!tpl.images||tpl.images.length===0) return;
+  toast('📥 正在保存'+tpl.images.length+'张图片…');
+  for(var i=0;i<tpl.images.length;i++){
+    setTimeout((function(idx){
+      return function(){
+        var a=document.createElement('a');
+        a.href=tpl.images[idx];
+        a.download='中瑞天禧酒店_'+(idx+1)+'.jpg';
+        a.style.display='none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+    })(i), i*300);
+  }
+  setTimeout(function(){toast('✅ 全部图片保存请求已发送，请查看相册/下载目录')},tpl.images.length*300+500);
+}
+
+function viewImage(tplId,idx){
+  var tpl=null;
+  for(var i=0;i<TEMPLATES.length;i++){if(TEMPLATES[i].id===tplId){tpl=TEMPLATES[i];break}}
+  if(!tpl||!tpl.images||!tpl.images[idx]) return;
+  var dataUrl=tpl.images[idx];
+  var viewer=document.createElement('div');
+  viewer.className='img-viewer';
+  viewer.innerHTML='<span class="close" onclick="this.parentElement.remove()">✕</span><img src="'+dataUrl+'" alt=""><button class="save-big" onclick="guestSaveImage(\''+tplId+'\','+idx+');this.parentElement.remove()">💾 保存到手机</button>';
+  viewer.onclick=function(e){if(e.target===viewer) viewer.remove()};
+  document.body.appendChild(viewer);
 }
 
 // ============ ADMIN AUTH ============
