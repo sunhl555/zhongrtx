@@ -8,7 +8,7 @@
 /* ===== 嵌入字体 ===== */
 @font-face {
   font-family: '京華老宋体';
-  src: url('京華老宋体2.002.ttf') format('truetype');
+  src: url('jh-font.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -60,7 +60,7 @@ body {
   width: 100%;
   max-width: var(--max-width);
   background: var(--bg-cream);
-  background-image: url('请柬背景图.jpg');
+  background-image: url('bg.jpg');
   background-size: 100% auto;
   background-position: top center;
   background-repeat: repeat-y;
@@ -136,7 +136,7 @@ body {
 
 /* ===== 封面区 ===== */
 .cover {
-  background: url('请柬背景图.jpg') center/cover no-repeat;
+  background: url('bg.jpg') center/cover no-repeat;
   color: #fff;
   text-align: center;
   position: relative;
@@ -447,7 +447,7 @@ body {
       <div class="sub-text">wedding invitation</div>
     </div>
     <div class="cover-bottom-img">
-      <img src="封面装饰.jpg" alt="">
+      <img src="cover-deco.jpg" alt="">
     </div>
   </section>
 
@@ -506,7 +506,7 @@ body {
   </section>
 
   <div class="bottom-deco">
-    <img src="底图装饰.png" alt="">
+    <img src="footer-deco.png" alt="">
   </div>
 
   <div class="footer">
@@ -610,7 +610,7 @@ function processDecoImage() {
     }
     ctx.putImageData(imageData, 0, 0);
   };
-  img.src = '封面花纹.jpg';
+  img.src = 'cover-pattern.jpg';
 }
 
 /* ===== 输入监听 ===== */
