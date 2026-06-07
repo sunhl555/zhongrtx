@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>婚礼请柬 · 刘锦懿 & 杨秀群</title>
+<style>
+/* ===== 嵌入字体 ===== */
+@font-face {
+  font-family: '京華老宋体';
+  src: url('京華老宋体2.002.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'FZGLFW';
+  src: url('FZGLFW.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NumberFont';
+  src: url('789-CAI978.ttf') format('truetype');
+  unicode-range: U+30-3A;
+}
+
+/* ===== CSS 变量 — 修改配色/字号在这里 ===== */
+:root {
+  --red: #7B1A2B;
+  --red-dark: #5E1421;
+  --gold: #D4A853;
+  --gold-light: #E8D5A3;
+  --bg-cream: #FFF8F0;
+  --bg-white: #FFFFFF;
+  --text: #3A2A1A;
+  --text-light: #8B7355;
+  --shadow: 0 4px 24px rgba(0,0,0,.08);
+
+  --font-title: "京華老宋体","STKaiti","KaiTi","楷体",serif;
+  --font-body: "京華老宋体","STKaiti","KaiTi","楷体",serif;
+  --font-deco: "京華老宋体","STKaiti","KaiTi","楷体",serif;
+
+  --max-width: 420px;
+  --radius: 8px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box }
+
+body {
+  font-family: 'NumberFont', var(--font-body);
+  background: #f0ebe0;
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+/* ===== 主容器 ===== */
+.invitation {
+  width: 100%;
+  max-width: var(--max-width);
+  background: var(--bg-cream);
+  background-image: url('请柬背景图.jpg');
+  background-size: 100% auto;
+  background-position: top center;
+  background-repeat: repeat-y;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ===== 顶部工具栏 ===== */
+.toolbar {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--max-width);
+  z-index: 100;
+  background: rgba(255,255,255,.95);
+  backdrop-filter: blur(10px);
+  padding: 10px 14px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  box-shadow: 0 1px 6px rgba(0,0,0,.08);
+  flex-wrap: wrap;
+}
+.toolbar input {
+  flex: 1;
+  min-width: 80px;
+  padding: 8px 10px;
+  border: 1.5px solid #d5c8b0;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  background: var(--bg-white);
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s;
+}
+.toolbar input:focus { border-color: var(--gold) }
+.toolbar input::placeholder { color: #c0b8a8; font-size: 12px }
+.toolbar .btn-share {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .2s;
+}
+.toolbar .btn-share:active { background: var(--red-dark) }
+
+.toast {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 20px;
+  font-size: 13px;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.toast.show { opacity: 1 }
+
+/* ===== 封面区 ===== */
+.cover {
+  background: url('请柬背景图.jpg') center/cover no-repeat;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 30px 0;
+}
+.cover-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  padding-top: 60px;
+}
+.cover-bottom-img {
+  width: 100%;
+  padding-bottom: 60px;
+}
+.cover-bottom-img img {
+  width: 100%;
+  max-width: 420px;
+  display: block;
+  mix-blend-mode: multiply;
+}
+.cover .hotel-name {
+  font-family: var(--font-deco);
+  font-size: 14px;
+  letter-spacing: 6px;
+  color: #7B1A2B;
+  margin-bottom: 40px;
+  opacity: .85;
+}
+.cover .title-char {
+  font-family: var(--font-title);
+  font-size: 52px;
+  font-weight: 400;
+  color: #7B1A2B;
+  letter-spacing: 10px;
+  margin-bottom: 16px;
+}
+.cover .divider-line {
+  width: 60px;
+  height: 1px;
+  background: #7B1A2B;
+  margin: 24px auto;
+  opacity: .6;
+}
+.cover .sub-text {
+  font-family: "FZGLFW", serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #7B1A2B;
+  opacity: .8;
+}
+.cover .scroll-hint {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #7B1A2B;
+  opacity: .45;
+  padding: 12px 0 16px;
+}
+/* ===== 正文区 ===== */
+.main-body {
+  padding: 60px 24px 30px;
+  position: relative;
+  text-align: center;
+}
+
+/* 送呈行 */
+.songcheng-line {
+  text-align: center;
+  font-family: var(--font-deco);
+  font-size: 18px;
+  color: #5D4037;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+}
+.songcheng-line .sc-label {
+  font-size: 18px;
+  color: #8B7355;
+}
+.songcheng-line .sc-name {
+  display: inline-block;
+  min-width: 60px;
+  border-bottom: 1px solid var(--red);
+  color: var(--red);
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* 正文分隔线 */
+.invite-divider {
+  text-align: center;
+  color: var(--gold);
+  font-size: 12px;
+  margin: 18px 0;
+  letter-spacing: 4px;
+}
+
+/* 花饰分隔 */
+.flower-divider {
+  text-align: center;
+  margin: 10px 0 28px;
+  color: var(--gold);
+  font-size: 18px;
+  letter-spacing: 8px;
+}
+
+/* 新人名 */
+.couple-names {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.couple-names .groom,
+.couple-names .bride {
+  display: inline-block;
+  font-family: var(--font-title);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 4px;
+  padding: 0 8px;
+}
+.couple-names .joiner {
+  display: inline-block;
+  font-size: 18px;
+  color: var(--gold);
+  margin: 0 6px;
+  font-weight: 100;
+}
+
+/* 正文段落 */
+.invite-text {
+  font-family: var(--font-deco);
+  font-size: 14px;
+  line-height: 1.9;
+  color: #5D4037;
+  text-align: center;
+  letter-spacing: 1px;
+}
+.invite-text .highlight {
+  color: var(--red);
+  font-weight: 600;
+}
+.invite-text .couple {
+  font-family: var(--font-title);
+  font-size: 18px;
+  color: var(--red);
+  font-weight: 700;
+  letter-spacing: 4px;
+}
+.invite-text .guest-name-placeholder {
+  display: inline-block;
+  min-width: 60px;
+  border-bottom: 1px solid var(--red);
+  color: var(--red);
+  font-weight: 600;
+  margin: 0 2px;
+}
+.invite-text .empty-placeholder {
+  display: inline-block;
+  min-width: 40px;
+  border-bottom: 1px solid #ccc;
+  color: #ccc;
+  margin: 0 2px;
+}
+
+/* 宴席信息 */
+.venue-info {
+  margin-top: 0;
+  text-align: center;
+  padding: 10px 16px;
+}
+.venue-info .venue-row {
+  font-family: var(--font-deco);
+  font-size: 14px;
+  color: #5D4037;
+  line-height: 1.7;
+  letter-spacing: 1px;
+}
+.venue-info .venue-label {
+  color: var(--text-light);
+  font-size: 12px;
+}
+
+/* ===== 地址交通区 ===== */
+.location-section {
+  padding: 50px 24px 24px;
+}
+.location-card {
+  border-radius: var(--radius);
+  padding: 20px 18px;
+}
+.location-card h3 {
+  font-family: var(--font-title);
+  font-size: 17px;
+  color: var(--red);
+  text-align: center;
+  margin-bottom: 14px;
+  letter-spacing: 2px;
+}
+.location-card .addr-line {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+  padding: 4px 0;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  text-align: center;
+  justify-content: center;
+}
+.location-card .addr-icon {
+  flex-shrink: 0;
+  font-size: 14px;
+  width: 22px;
+  text-align: center;
+}
+.location-card .addr-text {
+  font-size: 14px;
+  color: #5D4037;
+  line-height: 1.7;
+  text-align: center;
+}
+.nav-tip {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-light);
+  letter-spacing: 1px;
+}
+
+/* ===== 署名区 ===== */
+.signature {
+  text-align: center;
+  padding: 10px 24px 40px;
+  font-family: var(--font-deco);
+  font-size: 14px;
+  color: #5D4037;
+  letter-spacing: 2px;
+  line-height: 1.7;
+}
+.signature .from-name-placeholder {
+  display: inline-block;
+  min-width: 60px;
+  border-bottom: 1px solid var(--red);
+  color: var(--red);
+  font-weight: 600;
+  margin: 0 2px;
+}
+
+/* ===== 底部装饰 ===== */
+.bottom-deco {
+  text-align: center;
+  padding: 0 24px;
+}
+.bottom-deco img {
+  width: 100%;
+  max-width: 420px;
+  display: block;
+  margin: 0 auto;
+  mix-blend-mode: multiply;
+}
+
+/* ===== 底部 ===== */
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: #7B6B5A;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+/* ===== 响应式微调 ===== */
+@media (max-width: 360px) {
+  .cover .title-char { font-size: 56px }
+  .cover { padding: 60px 20px 40px }
+  .toolbar { padding: 8px 10px; gap: 4px }
+  .toolbar input { font-size: 12px; padding: 7px 8px }
+  .toolbar .btn-share { font-size: 12px; padding: 7px 10px }
+}
+</style>
+</head>
+<body>
+
+<div class="invitation">
+
+  <!-- ========== 顶部工具栏 ========== -->
+  <div class="toolbar">
+    <input type="text" id="guestInput" placeholder="宾客姓名" autocomplete="off">
+    <input type="text" id="fromInput" placeholder="邀请人姓名" autocomplete="off">
+    <button class="btn-share" onclick="copyLink()">复制链接</button>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <!-- ========== 封面区 ========== -->
+  <section class="cover">
+    <div class="cover-top">
+      <div class="title-char">请柬</div>
+      <div class="sub-text">wedding invitation</div>
+    </div>
+    <div class="cover-bottom-img">
+      <img src="封面装饰.jpg" alt="">
+    </div>
+  </section>
+
+  <!-- ========== 正文区 ========== -->
+  <section class="main-body">
+    <!-- 送呈行 -->
+    <p class="songcheng-line">
+      <span class="sc-label">送呈</span>
+      <span id="guestNameDisplay" class="sc-name">________</span>
+      <span class="sc-label">台启</span>
+    </p>
+
+    <!-- 正文内容 -->
+    <p class="invite-text">
+      谨定于二〇二六年公历九月六日<br>
+      农历七月廿五（星期天）<br>
+      在<span class="highlight">中瑞天禧酒店</span><br>
+      为<br>
+      <span class="couple">刘锦懿 &amp; 杨秀群</span><br>
+      举行婚礼
+    </p>
+
+    <p class="invite-text">
+      恭请<br>
+      光临
+    </p>
+
+    <div class="venue-info">
+      <div class="venue-row">
+        席设：中瑞天禧酒店二楼宴会厅
+      </div>
+      <div class="venue-row">
+        时间：18:00
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 地址交通区 ========== -->
+  <section class="location-section">
+    <div class="location-card">
+      <h3>酒店地址 & 交通</h3>
+      <div class="addr-line">
+        <span class="addr-text">地址：贵州·凯里迎宾大道（行政中心南侧）</span>
+      </div>
+      <div class="addr-line">
+        <span class="addr-text">公交路线：乘9路、15路公交车到交通大厦或老干局下</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 署名区 ========== -->
+  <section class="signature">
+    敬邀<br>
+    <span id="fromNameDisplay" class="from-name-placeholder">________</span><br>
+    敬上
+  </section>
+
+  <div class="bottom-deco">
+    <img src="底图装饰.png" alt="">
+  </div>
+
+  <div class="footer">
+    期待和你们一起，分享这份甜蜜与喜悦
+  </div>
+
+</div>
+
+<script>
+/* ===== JS 配置 — 修改内容在这里 ===== */
+var CONFIG = {
+  groom: '刘锦懿',
+  bride: '杨秀群',
+  hotelName: '中瑞天禧酒店',
+  banquet: '中瑞天禧酒店二楼宴会厅',
+  time: '18:00',
+  dateCN: '二〇二六年公历九月六日',
+  dateLunar: '农历七月廿五（星期天）',
+  pageTitle: '婚礼请柬 · 刘锦懿 & 杨秀群'
+};
+
+/* ===== 初始化：从 URL 参数读取姓名 ===== */
+function getParam(key) {
+  var m = location.search.match(new RegExp('[?&]' + key + '=([^&]*)'));
+  return m ? decodeURIComponent(m[1]) : '';
+}
+
+function updateURL(guest, from) {
+  var params = [];
+  if (guest) params.push('guest=' + encodeURIComponent(guest));
+  if (from) params.push('from=' + encodeURIComponent(from));
+  var base = location.href.split('?')[0];
+  var url = params.length ? base + '?' + params.join('&') : base;
+  history.replaceState(null, '', url);
+}
+
+function updateDisplay() {
+  var guest = document.getElementById('guestInput').value.trim();
+  var from = document.getElementById('fromInput').value.trim();
+
+  document.getElementById('guestNameDisplay').textContent = guest || '________';
+  document.getElementById('fromNameDisplay').textContent = from || '________';
+
+  updateURL(guest, from);
+}
+
+/* ===== 页面加载 ===== */
+document.addEventListener('DOMContentLoaded', function() {
+  var guest = getParam('guest');
+  var from = getParam('from');
+
+  if (guest) {
+    document.getElementById('guestInput').value = guest;
+  }
+  if (from) {
+    document.getElementById('fromInput').value = from;
+  }
+  updateDisplay();
+
+  /* 封面花纹去白底 */
+  processDecoImage();
+});
+
+function processDecoImage() {
+  var canvas = document.getElementById('decoCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var img = new Image();
+  img.onload = function() {
+    var w = img.naturalWidth;
+    var h = img.naturalHeight;
+    canvas.width = w;
+    canvas.height = h;
+    ctx.drawImage(img, 0, 0);
+    var imageData = ctx.getImageData(0, 0, w, h);
+    var data = imageData.data;
+    for (var i = 0; i < data.length; i += 4) {
+      var r = data[i];
+      var g = data[i + 1];
+      var b = data[i + 2];
+      var brightness = (r + g + b) / 3;
+      // 白色/浅色背景 → 完全透明
+      if (brightness > 220) {
+        data[i + 3] = 0;
+        continue;
+      }
+      // 红色检测：R明显大于G且大于B
+      var isRed = (r > g * 1.4) && (r > b * 1.4) && (r > 100);
+      // 深色线条检测
+      var isDark = brightness < 90;
+      // 只保留红色和深色线条，其余透明
+      if (isRed || isDark) {
+        // 保留
+      } else if (brightness > 160) {
+        // 浅色非红 → 完全透明
+        data[i + 3] = 0;
+      } else {
+        // 中间色调 → 半透明过渡
+        data[i + 3] = Math.round((160 - brightness) / 160 * 255 * 0.5);
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
+  };
+  img.src = '封面花纹.jpg';
+}
+
+/* ===== 输入监听 ===== */
+document.getElementById('guestInput').addEventListener('input', updateDisplay);
+document.getElementById('fromInput').addEventListener('input', updateDisplay);
+
+/* ===== 复制链接 ===== */
+function copyLink() {
+  var link = location.href;
+  var toast = document.getElementById('toast');
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(link).then(function() {
+      toast.textContent = '链接已复制，发送给宾客吧！';
+      toast.classList.add('show');
+      setTimeout(function() { toast.classList.remove('show'); }, 2000);
+    }).catch(function() {
+      fallbackCopy(link);
+    });
+  } else {
+    fallbackCopy(link);
+  }
+}
+
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed'; ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    document.getElementById('toast').textContent = '链接已复制，发送给宾客吧！';
+  } catch(e) {
+    document.getElementById('toast').textContent = '复制失败，请手动复制地址栏链接';
+  }
+  document.body.removeChild(ta);
+  var toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(function() { toast.classList.remove('show'); }, 2000);
+}
+
+/* ===== 页面标题 ===== */
+document.title = CONFIG.pageTitle;
+</script>
+
+</body>
+</html>
