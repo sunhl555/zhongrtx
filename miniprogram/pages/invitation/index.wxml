@@ -1,0 +1,85 @@
+<!-- ===== 主容器 ===== -->
+<scroll-view class="invitation" scroll-y enhanced show-scrollbar="{{false}}">
+
+  <!-- ========== 封面区 ========== -->
+  <view class="cover">
+    <view class="cover-top">
+      <view class="title-char">请柬</view>
+      <view class="sub-text">wedding invitation</view>
+    </view>
+    <view class="cover-bottom-img">
+      <image src="https://sunhl555.github.io/zhongrtx/cover-deco.jpg" mode="widthFix" class="deco-img"></image>
+    </view>
+  </view>
+
+  <!-- ========== 正文区 ========== -->
+  <view class="main-body">
+
+    <!-- 送呈行 -->
+    <view class="songcheng-line">
+      <text class="sc-label">送呈</text>
+      <text class="sc-name">{{guestName || '________'}}</text>
+      <text class="sc-label">台启</text>
+    </view>
+
+    <!-- 正文内容 -->
+    <view class="invite-text">
+      <text>谨定于二〇二六年公历九月六日\n</text>
+      <text>农历七月廿五（星期天）\n</text>
+      <text>在<text class="highlight">中瑞天禧酒店</text>\n</text>
+      <text>为\n</text>
+      <text class="couple">刘锦懿 & 杨秀群\n</text>
+      <text>举行婚礼</text>
+    </view>
+
+    <view class="invite-text margin-top">
+      <text>恭请\n</text>
+      <text>光临</text>
+    </view>
+
+    <view class="venue-info">
+      <view class="venue-row">席设：中瑞天禧酒店二楼宴会厅</view>
+      <view class="venue-row">时间：18:00</view>
+    </view>
+  </view>
+
+  <!-- ========== 地址交通区 ========== -->
+  <view class="location-section">
+    <view class="location-card">
+      <view class="loc-title">酒店地址 & 交通</view>
+      <view class="addr-line">
+        <text class="addr-text">地址：贵州·凯里迎宾大道（行政中心南侧）</text>
+      </view>
+      <view class="addr-line">
+        <text class="addr-text">公交路线：乘9路、15路公交车到交通大厦或老干局下</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 署名区 ========== -->
+  <view class="signature">
+    <text>敬邀\n</text>
+    <text class="from-name-placeholder">{{fromName || '________'}}</text>
+    <text>\n敬上</text>
+  </view>
+
+  <!-- ========== 底部装饰 ========== -->
+  <view class="bottom-deco">
+    <image src="https://sunhl555.github.io/zhongrtx/footer-deco.png" mode="widthFix" class="deco-img"></image>
+  </view>
+
+  <view class="footer">
+    <text>期待和你们一起，分享这份甜蜜与喜悦</text>
+  </view>
+
+  <!-- 底部留白给输入栏 -->
+  <view style="height:120rpx;"></view>
+
+</scroll-view>
+
+<!-- ===== 底部输入栏 ===== -->
+<view class="input-bar">
+  <input class="name-input" placeholder="宾客姓名" value="{{guestName}}" bindinput="onGuestInput" />
+  <input class="name-input" placeholder="邀请人姓名" value="{{fromName}}" bindinput="onFromInput" />
+  <button class="share-btn" open-type="share">发送给宾客</button>
+</view>

@@ -1,0 +1,33 @@
+/* ===== 字体嵌入 ===== */
+@font-face {
+  font-family: '京華老宋体';
+  src: url('https://sunhl555.github.io/zhongrtx/jh-font.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'FZGLFW';
+  src: url('https://sunhl555.github.io/zhongrtx/FZGLFW.TTF') format('truetype');
+}
+@font-face {
+  font-family: 'NumberFont';
+  src: url('https://sunhl555.github.io/zhongrtx/789-CAI978.ttf') format('truetype');
+}
+
+/* ===== CSS 变量 ===== */
+page {
+  --red: #7B1A2B;
+  --red-dark: #5E1421;
+  --gold: #D4A853;
+  --text: #3A2A1A;
+  --text-light: #8B7355;
+  --font-title: "京華老宋体","STKaiti","KaiTi","楷体",serif;
+  --font-body: "京華老宋体","STKaiti","KaiTi","楷体",serif;
+  --font-deco: "京華老宋体","STKaiti","KaiTi","楷体",serif;
+  --max-width: 420px;
+  --radius: 8px;
+  background: #f0ebe0;
+  font-family: 'NumberFont', '京華老宋体', "STKaiti", "KaiTi", "楷体", serif;
+  color: #3A2A1A;
+}
+
+/* 全局重置 */
+* { margin: 0; padding: 0; box-sizing: border-box; }

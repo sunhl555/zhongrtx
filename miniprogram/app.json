@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "pages/invitation/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "婚礼请柬",
+    "navigationBarBackgroundColor": "#FFF8F0",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f0ebe0"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

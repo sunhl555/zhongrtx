@@ -1,0 +1,235 @@
+/* ===== 主容器 ===== */
+.invitation {
+  width: 100%;
+  min-height: 100vh;
+  background-image: url('https://sunhl555.github.io/zhongrtx/bg.jpg');
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+}
+
+/* ===== 封面区 ===== */
+.cover {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 120rpx 60rpx 0;
+  background-image: url('https://sunhl555.github.io/zhongrtx/bg.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.cover-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  padding-top: 60px;
+}
+.cover-bottom-img {
+  width: 100%;
+  padding-bottom: 60px;
+  flex-shrink: 0;
+}
+.deco-img {
+  width: 120%;
+  margin-left: -10%;
+  display: block;
+}
+.cover .title-char {
+  font-family: '京華老宋体', "STKaiti", "KaiTi", "楷体", serif;
+  font-size: 104rpx;
+  font-weight: 400;
+  color: #7B1A2B;
+  letter-spacing: 20rpx;
+  margin-bottom: 32rpx;
+}
+.cover .sub-text {
+  font-family: "FZGLFW", serif;
+  font-size: 32rpx;
+  font-weight: 700;
+  letter-spacing: 6rpx;
+  color: #7B1A2B;
+  opacity: 0.8;
+}
+
+/* ===== 正文区 ===== */
+.main-body {
+  padding: 40rpx 48rpx 60rpx;
+  text-align: center;
+}
+
+/* 送呈行 */
+.songcheng-line {
+  text-align: center;
+  font-size: 36rpx;
+  color: #5D4037;
+  letter-spacing: 4rpx;
+  margin-bottom: 36rpx;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+.songcheng-line .sc-label {
+  font-size: 36rpx;
+  color: #8B7355;
+}
+.songcheng-line .sc-name {
+  display: inline-block;
+  min-width: 120rpx;
+  border-bottom: 2rpx solid #7B1A2B;
+  color: #7B1A2B;
+  font-weight: 600;
+  font-size: 36rpx;
+}
+
+/* 正文段落 */
+.invite-text {
+  font-size: 28rpx;
+  line-height: 2;
+  color: #5D4037;
+  text-align: center;
+  letter-spacing: 2rpx;
+}
+.invite-text.margin-top {
+  margin-top: 16rpx;
+}
+.invite-text .highlight {
+  color: #7B1A2B;
+  font-weight: 600;
+}
+.invite-text .couple {
+  font-size: 36rpx;
+  color: #7B1A2B;
+  font-weight: 700;
+  letter-spacing: 8rpx;
+}
+
+/* 宴席信息 */
+.venue-info {
+  margin-top: 30rpx;
+  text-align: center;
+  padding: 28rpx 32rpx;
+}
+.venue-info .venue-row {
+  font-size: 28rpx;
+  color: #5D4037;
+  line-height: 1.7;
+  letter-spacing: 2rpx;
+}
+
+/* ===== 地址交通区 ===== */
+.location-section {
+  padding: 100rpx 48rpx 48rpx;
+}
+.location-card {
+  padding: 40rpx 36rpx;
+}
+.loc-title {
+  font-family: '京華老宋体', "STKaiti", "KaiTi", "楷体", serif;
+  font-size: 34rpx;
+  color: #7B1A2B;
+  text-align: center;
+  margin-bottom: 28rpx;
+  letter-spacing: 4rpx;
+}
+.addr-line {
+  font-size: 28rpx;
+  color: #5D4037;
+  line-height: 1.7;
+  padding: 8rpx 0;
+  text-align: center;
+}
+.addr-text {
+  font-size: 28rpx;
+  color: #5D4037;
+  line-height: 1.7;
+}
+
+/* ===== 署名区 ===== */
+.signature {
+  text-align: center;
+  padding: 20rpx 48rpx 80rpx;
+  font-size: 28rpx;
+  color: #5D4037;
+  letter-spacing: 4rpx;
+  line-height: 2;
+}
+.from-name-placeholder {
+  display: inline-block;
+  min-width: 120rpx;
+  border-bottom: 2rpx solid #7B1A2B;
+  color: #7B1A2B;
+  font-weight: 600;
+}
+
+/* ===== 底部装饰 ===== */
+.bottom-deco {
+  text-align: center;
+  padding: 0 48rpx;
+}
+.bottom-deco .deco-img {
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ===== 底部文案 ===== */
+.footer {
+  text-align: center;
+  padding: 40rpx;
+  color: #7B6B5A;
+  font-size: 22rpx;
+  letter-spacing: 2rpx;
+}
+
+/* ===== 底部输入栏 ===== */
+.input-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255,255,255,0.96);
+  padding: 16rpx 24rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.06);
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom, 16rpx);
+}
+.name-input {
+  flex: 1;
+  min-width: 0;
+  padding: 16rpx 20rpx;
+  border: 2rpx solid #d5c8b0;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  background: #fff;
+  color: #3A2A1A;
+  height: 64rpx;
+}
+.name-input:focus {
+  border-color: #D4A853;
+}
+.name-input + .name-input {
+  margin-left: 12rpx;
+}
+.share-btn {
+  margin-left: 12rpx;
+  flex-shrink: 0;
+  padding: 0 28rpx;
+  background: #7B1A2B;
+  color: #fff;
+  border: none;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  height: 64rpx;
+  line-height: 64rpx;
+  white-space: nowrap;
+}
+.share-btn::after {
+  border: none;
+}
