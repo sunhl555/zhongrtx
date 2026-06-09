@@ -386,7 +386,7 @@ body {
 <div class="invitation">
 
   <!-- ========== 顶部工具栏 ========== -->
-  <div class="toolbar">
+  <div class="toolbar" id="toolbar">
     <input type="text" id="guestInput" placeholder="宾客姓名" autocomplete="off">
     <input type="text" id="fromInput" placeholder="邀请人姓名" autocomplete="off">
     <button class="btn-share" onclick="copyLink()">复制链接</button>
@@ -497,8 +497,10 @@ document.addEventListener('DOMContentLoaded', function() {
   var from = getParam('from');
 
   if (guest) {
+    // 宾客模式：隐藏工具栏
     document.getElementById('guestInput').value = guest;
     document.title = guest + ' · 婚礼请柬';
+    document.getElementById('toolbar').style.display = 'none';
   }
   if (from) {
     document.getElementById('fromInput').value = from;
