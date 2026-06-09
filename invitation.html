@@ -389,7 +389,8 @@ body {
   <!-- ========== 顶部工具栏 ========== -->
   <div class="toolbar" id="toolbar">
     <input type="text" id="guestInput" placeholder="宾客姓名" autocomplete="off">
-    <input type="text" id="fromInput" placeholder="邀请人姓名" autocomplete="off">
+    <input type="text" id="fromInput1" placeholder="邀请人1" autocomplete="off">
+    <input type="text" id="fromInput2" placeholder="邀请人2" autocomplete="off">
     <button class="btn-share" onclick="copyLink()">复制链接</button>
   </div>
   <div class="toast" id="toast"></div>
@@ -440,7 +441,8 @@ body {
   
   <!-- ========== 署名区 ========== -->
   <section class="signature">
-    <span id="fromNameDisplay" class="from-name-placeholder">________</span> 敬邀
+    <span id="fromNameDisplay1" class="from-name-placeholder">________</span> 敬邀<br>
+    <span id="fromNameDisplay2" class="from-name-placeholder">________</span> 敬邀
   </section>
 
   <div class="bottom-deco">
@@ -476,20 +478,24 @@ function getParam(key) {
 /* ===== 构建带参链接 ===== */
 function buildLink() {
   var guest = document.getElementById('guestInput').value.trim();
-  var from = document.getElementById('fromInput').value.trim();
+  var from1 = document.getElementById('fromInput1').value.trim();
+  var from2 = document.getElementById('fromInput2').value.trim();
   var base = location.href.split('?')[0].split('#')[0];
   var params = [];
   if (guest) params.push('guest=' + encodeURIComponent(guest));
-  if (from) params.push('from=' + encodeURIComponent(from));
+  if (from1) params.push('from1=' + encodeURIComponent(from1));
+  if (from2) params.push('from2=' + encodeURIComponent(from2));
   return params.length ? base + '?' + params.join('&') : base;
 }
 
 function updateDisplay() {
   var guest = document.getElementById('guestInput').value.trim();
-  var from = document.getElementById('fromInput').value.trim();
+  var from1 = document.getElementById('fromInput1').value.trim();
+  var from2 = document.getElementById('fromInput2').value.trim();
 
   document.getElementById('guestNameDisplay').textContent = guest || '________';
-  document.getElementById('fromNameDisplay').textContent = from || '________';
+  document.getElementById('fromNameDisplay1').textContent = from1 || '________';
+  document.getElementById('fromNameDisplay2').textContent = from2 || '________';
 }
 
 /* ===== 应用宾客模式 ===== */
@@ -501,14 +507,18 @@ function applyGuestMode(guest) {
 /* ===== 页面加载 ===== */
 document.addEventListener('DOMContentLoaded', function() {
   var guest = getParam('guest');
-  var from = getParam('from');
+  var from1 = getParam('from1');
+  var from2 = getParam('from2');
 
   if (guest) {
     document.getElementById('guestInput').value = guest;
     applyGuestMode(guest);
   }
-  if (from) {
-    document.getElementById('fromInput').value = from;
+  if (from1) {
+    document.getElementById('fromInput1').value = from1;
+  }
+  if (from2) {
+    document.getElementById('fromInput2').value = from2;
   }
   updateDisplay();
 
@@ -561,7 +571,8 @@ function processDecoImage() {
 
 /* ===== 输入监听 ===== */
 document.getElementById('guestInput').addEventListener('input', updateDisplay);
-document.getElementById('fromInput').addEventListener('input', updateDisplay);
+document.getElementById('fromInput1').addEventListener('input', updateDisplay);
+document.getElementById('fromInput2').addEventListener('input', updateDisplay);
 
 /* ===== 复制链接 ===== */
 function copyLink() {
