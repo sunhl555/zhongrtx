@@ -1,2 +1,7 @@
 *.pdf
 test_screenshot.png
+.superpowers/
+__pycache__/
+*.db
+node_modules/
+dist/
