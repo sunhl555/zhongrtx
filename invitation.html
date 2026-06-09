@@ -466,21 +466,22 @@ var CONFIG = {
   pageTitle: '婚礼请柬 · 刘锦懿 & 杨秀群'
 };
 
-/* ===== 初始化：从 URL 参数读取姓名（兼容 ? 和 #） ===== */
+/* ===== 从 URL 读取参数 ===== */
 function getParam(key) {
-  // 同时检查 search (?param) 和 hash (#param)
-  var raw = location.search + '&' + location.hash.replace('#', '');
-  var m = raw.match(new RegExp('(?:^|&)' + key + '=([^&]*)'));
+  var raw = location.search.substring(1) + '&' + location.hash.replace('#', '');
+  var m = raw.match(new RegExp('(^|&)' + key + '=([^&]*)'));
   return m ? decodeURIComponent(m[1]) : '';
 }
 
-function updateURL(guest, from) {
+/* ===== 构建带参链接 ===== */
+function buildLink() {
+  var guest = document.getElementById('guestInput').value.trim();
+  var from = document.getElementById('fromInput').value.trim();
+  var base = location.href.split('?')[0].split('#')[0];
   var params = [];
   if (guest) params.push('guest=' + encodeURIComponent(guest));
   if (from) params.push('from=' + encodeURIComponent(from));
-  var base = location.href.split('?')[0].split('#')[0];
-  var url = params.length ? base + '?guest=' + encodeURIComponent(guest || '') + '&from=' + encodeURIComponent(from || '') : base;
-  history.replaceState(null, '', url);
+  return params.length ? base + '?' + params.join('&') : base;
 }
 
 function updateDisplay() {
@@ -489,8 +490,12 @@ function updateDisplay() {
 
   document.getElementById('guestNameDisplay').textContent = guest || '________';
   document.getElementById('fromNameDisplay').textContent = from || '________';
+}
 
-  updateURL(guest, from);
+/* ===== 应用宾客模式 ===== */
+function applyGuestMode(guest) {
+  document.getElementById('toolbar').classList.add('hidden');
+  document.title = guest + ' · 婚礼请柬';
 }
 
 /* ===== 页面加载 ===== */
@@ -499,10 +504,8 @@ document.addEventListener('DOMContentLoaded', function() {
   var from = getParam('from');
 
   if (guest) {
-    // 宾客模式：隐藏工具栏
     document.getElementById('guestInput').value = guest;
-    document.title = guest + ' · 婚礼请柬';
-    document.getElementById('toolbar').classList.add('hidden');
+    applyGuestMode(guest);
   }
   if (from) {
     document.getElementById('fromInput').value = from;
@@ -562,7 +565,7 @@ document.getElementById('fromInput').addEventListener('input', updateDisplay);
 
 /* ===== 复制链接 ===== */
 function copyLink() {
-  var link = location.href;
+  var link = buildLink();
   var toast = document.getElementById('toast');
 
   if (navigator.clipboard) {
