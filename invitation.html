@@ -466,10 +466,11 @@ var CONFIG = {
   pageTitle: '婚礼请柬 · 刘锦懿 & 杨秀群'
 };
 
-/* ===== 初始化：从 URL hash 读取姓名（微信不丢hash） ===== */
+/* ===== 初始化：从 URL 参数读取姓名（兼容 ? 和 #） ===== */
 function getParam(key) {
-  var hash = location.hash.replace('#', '');
-  var m = hash.match(new RegExp('(?:^|&)' + key + '=([^&]*)'));
+  // 同时检查 search (?param) 和 hash (#param)
+  var raw = location.search + '&' + location.hash.replace('#', '');
+  var m = raw.match(new RegExp('(?:^|&)' + key + '=([^&]*)'));
   return m ? decodeURIComponent(m[1]) : '';
 }
 
@@ -477,8 +478,8 @@ function updateURL(guest, from) {
   var params = [];
   if (guest) params.push('guest=' + encodeURIComponent(guest));
   if (from) params.push('from=' + encodeURIComponent(from));
-  var base = location.href.split('#')[0];
-  var url = params.length ? base + '#' + params.join('&') : base;
+  var base = location.href.split('?')[0].split('#')[0];
+  var url = params.length ? base + '?guest=' + encodeURIComponent(guest || '') + '&from=' + encodeURIComponent(from || '') : base;
   history.replaceState(null, '', url);
 }
 
