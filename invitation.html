@@ -500,7 +500,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 宾客模式：隐藏工具栏
     document.getElementById('guestInput').value = guest;
     document.title = guest + ' · 婚礼请柬';
-    document.getElementById('toolbar').style.display = 'none';
+    document.getElementById('toolbar').classList.add('hidden');
   }
   if (from) {
     document.getElementById('fromInput').value = from;
