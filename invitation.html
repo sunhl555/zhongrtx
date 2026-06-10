@@ -472,7 +472,7 @@ var CONFIG = {
 /* ===== 从 URL 读取参数 ===== */
 function getParam(key) {
   var raw = location.search.substring(1) + '&' + location.hash.replace('#', '');
-  var m = raw.match(new RegExp('(^|&)' + key + '=([^&]*)'));
+  var m = raw.match(new RegExp('(?:^|&)' + key + '=([^&]*)'));
   return m ? decodeURIComponent(m[1]) : '';
 }
 
